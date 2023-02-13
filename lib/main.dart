@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
+import 'package:projet_1/detaildunjeu.dart';
 import 'connexion.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget{
         '/inscription': (context) => Inscription(),
         '/mdpoublie': (context) => Mdpoublie(),
         '/accueil': (context) => Accueil(),
+        '/detail': (context) => Detail(),
       },
 
       initialRoute: '/',
