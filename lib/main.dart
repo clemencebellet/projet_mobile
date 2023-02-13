@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget{
         '/connexion': (context) => Connexion(),
         '/inscription': (context) => Inscription(),
         '/mdpoublie': (context) => Mdpoublie(),
+        '/accueil': (context) => Accueil(),
       },
 
       initialRoute: '/',
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget{
                 builder : (context, snapshot){
                   if(snapshot.connectionState == ConnectionState.done)
                   {
-                    return Accueil();
+                    return Connexion();
                   }
                   return const Center(child : CircularProgressIndicator(),
                   );
