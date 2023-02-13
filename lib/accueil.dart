@@ -14,14 +14,40 @@ class Accueil extends StatefulWidget {
 }
 
 
+
 class _AccueilState extends State<Accueil> {
 
 
   @override
   Widget build(BuildContext context) {
 
-    return const Scaffold(
+    return Scaffold(
+      body : CustomScrollView(
+        slivers: [SliverAppBar.large(
+          leading: IconButton(
+        onPressed: (){},
+        icon : Icon(Icons.menu),
+          ),
+          title: Text('Accueil'),
+          actions: [IconButton(onPressed: (){},icon: Icon(Icons.more_vert))],
+        )] ,
+      ),
+
 
         );
+
+
+
   }
 }
+
+/*
+Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/background.png"),
+                fit: BoxFit.cover),
+          )
+ */
