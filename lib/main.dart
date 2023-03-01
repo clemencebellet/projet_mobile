@@ -38,6 +38,10 @@ class MyApp extends StatelessWidget{
 
       initialRoute: '/',
       title: 'Projet',
+      theme: ThemeData(
+          primarySwatch: Colors.grey,
+          scaffoldBackgroundColor: const Color.fromARGB(30, 38, 44, 100),
+        ),
       debugShowCheckedModeBanner: false,
         home: Scaffold(
             body :  FutureBuilder(
