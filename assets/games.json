@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Jeu 1",
+    "description": "Description du jeu 1",
+    "image": "assets/Jacket.png"
+  },
+  {
+    "title": "Jeu 2",
+    "description": "Description du jeu 2",
+    "image": "assets/Jacket.png"
+  },
+  {
+    "title": "Jeu 3",
+    "description": "Description du jeu 3",
+    "image": "assets/Jacket.png"
+  },
+  {
+    "title": "Jeu 4",
+    "description": "Description du jeu 3",
+    "image": "assets/Jacket.png"
+  }
+]
