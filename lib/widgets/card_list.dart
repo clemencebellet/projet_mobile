@@ -31,12 +31,14 @@ class _CardListState extends State<CardList> {
         final String gameTitle = await _fetchGameTitle(appId);
         final String gamePublisher = await _fetchGamePublisher(appId);
         final String gameCover = await _fetchGameCover(appId);
+        final String gamePrice = await _fetchGamePrice(appId);
 
         topGames.add({
           "title": gameTitle,
-          "publisher": gamePublisher,
-          "description": gameDescription,
-          "image": "assets/Jacket.png",
+          //"publisher": gamePublisher,
+          //"description": gameDescription,
+          "prix": gamePrice,
+          //"image": "assets/Jacket.png",
           "cover": gameCover,
         });
       }
@@ -94,7 +96,7 @@ class _CardListState extends State<CardList> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Map<String, dynamic> gameData = responseData["$appId"];
       final Map<String, dynamic> gameDetails = gameData['data'];
-      final String gamePublisher = gameDetails['publishers'];
+      final String gamePublisher = gameDetails['developers'];
 
       print(gamePublisher);
 
@@ -117,6 +119,31 @@ class _CardListState extends State<CardList> {
       final String gameDescription = gameDetails['short_description'];
 
       return gameDescription;
+    } catch (error) {
+      print(error);
+      return "";
+    }
+  }
+
+  Future<String> _fetchGamePrice(int appId) async {
+    final String url =
+        "https://store.steampowered.com/api/appdetails?appids=$appId";
+final Future<Null> essai;
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> gameData = responseData["$appId"];
+      final Map<String, dynamic> gameDetails1 = gameData['data'];
+      final Map<String, dynamic> gameDetails = gameDetails1['price_overview'];
+
+      if(gameDetails != null && gameDetails.containsKey('final_formatted')) {
+        final String gamePrice = gameDetails['final_formatted'];
+        print(gamePrice);
+        return gamePrice;
+      } else {
+        print("0");
+        return "0";
+      }
     } catch (error) {
       print(error);
       return "";
@@ -162,25 +189,22 @@ class _CardListState extends State<CardList> {
                           child: Text(
                             game['title'],
                             style: const TextStyle(
+                                fontFamily: 'ProximaNova-Regular',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18.0,
                                 color: Color.fromARGB(255, 255, 255, 255)),
                           ),
                         ),
+
+
                         SizedBox(
                           width: 200,
                           child: Text(
-                            game['publisher'],
+                            game['price'],
                             style: const TextStyle(
                                 fontSize: 12,
                                 color: Color.fromARGB(255, 255, 255, 255)),
                           ),
-                        ),
-                        const Text(
-                          'Prix: 10€',
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 255, 255, 255)),
                         ),
                       ]),
                   ElevatedButton(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projet_1/widgets/card.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
 import 'package:projet_1/detaildunjeu.dart';
+
 import 'connexion.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -34,6 +36,9 @@ class MyApp extends StatelessWidget{
         '/mdpoublie': (context) => Mdpoublie(),
         '/accueil': (context) => Accueil(),
         '/detail': (context) => Detail(),
+
+
+
       },
 
       initialRoute: '/',
@@ -49,7 +54,7 @@ class MyApp extends StatelessWidget{
                 builder : (context, snapshot){
                   if(snapshot.connectionState == ConnectionState.done)
                   {
-                      return Connexion();
+                      return Accueil();
                   }
                   return const Center(child : CircularProgressIndicator(),
                   );

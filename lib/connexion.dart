@@ -109,6 +109,7 @@ class _ConnexionState extends State<Connexion> {
       child: Stack(
         children: <Widget>[
           Container(
+
               height: double.infinity,
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -224,7 +225,7 @@ User? user = await loginUsingEmailPassword(email: emailController.text, password
 print(user);
 if(user!=null){
   // ignore: use_build_context_synchronously
-  Navigator.pushNamed(context, '/inscription');
+  Navigator.pushNamed(context,'/accueil');
 }
                 },
                 child: const Center(

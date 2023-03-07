@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/card_list.dart';
+import '../widgets/card.dart';
 
 class Accueil extends StatelessWidget {
   const Accueil({Key? key}) : super(key: key);
@@ -7,35 +8,61 @@ class Accueil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
+      backgroundColor: const Color(0xFF1A2025),
       appBar: AppBar(
-        title: const Text('Accueil'),
-        // Put an icon heart and a star in the app bar
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.favorite),
-            tooltip: 'Voir les favoris',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Voilà la liste des favoris')),
-              );
-            },
+
+        title: const Text(
+          textAlign: TextAlign.left,
+          'Accueil',
+
+          style: TextStyle(
+
+            fontFamily: "GoogleSans-Bold",
+            color: Colors.white,
+            fontSize: 18,
           ),
-          IconButton(
-            icon: const Icon(Icons.star),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Voilà les favoris')),
-              );
-            },
-          ),
-        ],
-      ),
+        ),
+        shadowColor: Colors.black,
+        elevation: 40,
+
+          backgroundColor : const Color(0xFF1A2025),
+          // Put an icon heart and a star in the app bar
+          actions: <Widget>[
+
+            IconButton(
+              icon: const Icon(Icons.favorite),
+              color: Colors.white,
+              tooltip: 'Voir les favoris',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Voilà la liste des favoris')),
+                );
+              },
+            ),
+            IconButton(
+              color: Colors.white,
+              icon: const Icon(Icons.star),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Voilà les favoris')),
+                );
+              },
+            ),
+          ],
+          leading: new Container(),
+        ),
+
       body: SafeArea(
-        child: Column(
+
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
+          children:<Widget> [
+            Container(
+
+            child: const Padding(
               padding: EdgeInsets.all(16.0),
               child: TextField(
                 textInputAction: TextInputAction.search,
@@ -61,13 +88,16 @@ class Accueil extends StatelessWidget {
                 ),
               ),
             ),
+      ),
             Stack(
+
               children: [
+
                 const SizedBox(
                   height: 200,
                   width: double.infinity,
                   child: Image(
-                    image: AssetImage('assets/Titan.png'),
+                    image: AssetImage('assets/fondarriere.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -128,7 +158,7 @@ class Accueil extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: 140,
+                  top: 160,
                   left: 20,
                   child: ElevatedButton(
                     onPressed: () {
@@ -139,7 +169,7 @@ class Accueil extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurple,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 5),
+                          horizontal: 40, vertical:   6),
                     ),
                     child: const Text(
                       'En savoir plus',
@@ -154,13 +184,13 @@ class Accueil extends StatelessWidget {
                     height: 150,
                     width: 100,
                     child: Image(
-                      image: AssetImage('assets/Jacket.png'),
+                      image: AssetImage('assets/jeudvd.png'),
                     ),
                   ),
                 ),
               ],
             ),
-            const Padding(
+             Container(
               padding: EdgeInsets.all(16.0),
               child: Text(
                 "Les meilleures ventes",
@@ -173,12 +203,12 @@ class Accueil extends StatelessWidget {
             ),
             const Expanded(
               child: SizedBox(
-                child: CardList(),
-              ),
+                child: CardInfos(),
+              )
             )
           ],
         ),
       ),
-    );
+        );
   }
 }
