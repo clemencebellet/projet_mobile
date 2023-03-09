@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/card_list.dart';
+
 import '../widgets/card.dart';
 
+final ScrollController _scrollController = ScrollController();
 class Accueil extends StatelessWidget {
   const Accueil({Key? key}) : super(key: key);
 
@@ -57,11 +58,10 @@ class Accueil extends StatelessWidget {
 
       body: SafeArea(
 
-        child:  Column(
+          child : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children:<Widget> [
             Container(
-
             child: const Padding(
               padding: EdgeInsets.all(16.0),
               child: TextField(
@@ -167,7 +167,7 @@ class Accueil extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor : const Color(0xFF636AF6),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical:   6),
                     ),

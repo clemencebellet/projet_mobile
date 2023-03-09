@@ -6,6 +6,8 @@ import 'dart:io' as Io;
 
 import 'dart:typed_data';
 
+import 'package:projet_1/detail.dart';
+
 class CardInfos extends StatefulWidget {
   const CardInfos({super.key});
 
@@ -15,8 +17,13 @@ class CardInfos extends StatefulWidget {
 
 class _CardInfosState extends State<CardInfos> {
   List<dynamic> _topGames = [];
+   List<dynamic> jeux =[];
+
+
+
 
   Future<void> _fetchTopGames() async {
+
     const String url =
         "https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/?";
 
@@ -37,12 +44,16 @@ class _CardInfosState extends State<CardInfos> {
         final Object gameInfos = await _fetchGameInfos(appId);
         final String gameCover = await _fetchGameCover(appId);
         final String gamePrice = await _fetchGamePrice(appId);
+        final String gameDescription = await _fetchGameDescription(appId);
+        final Object gameReviews = await _fetchGameReviewsStar(appId);
 
         topGames.add({
           "title": gameTitle,
           "infos": gameInfos,
           "image": gameCover,
           "prix" : gamePrice,
+          "description" : gameDescription,
+          "review" : gameReviews,
 
 
         });
@@ -50,11 +61,16 @@ class _CardInfosState extends State<CardInfos> {
 
       setState(() {
         _topGames = topGames;
+
       });
     } catch (error) {
       print(error);
     }
   }
+
+
+
+
 
   Future<String> _fetchGameCover(int appId) async {
 
@@ -89,6 +105,51 @@ class _CardInfosState extends State<CardInfos> {
       final Map<String, dynamic> gameDetails = gameData['data'];
       final String gameTitle = gameDetails['name'];
       return gameTitle;
+    } catch (error) {
+      print(error);
+      return "";
+    }
+  }
+
+  Future<Object> _fetchGameReviewsStar(int appId) async {
+
+    final String url =
+        "https://store.steampowered.com/appreviews/$appId?json=1";
+    final int e ;
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> gameDetails = responseData['query_summary'];
+
+      if (gameDetails != null && gameDetails.containsKey('review_score') ) {
+        final int gameReview = gameDetails['review_score'];
+
+        print(gameReview);
+        return gameReview.toString();
+      } else {
+        print('Aucune note trouvée pour l\'application $appId.');
+        return "";
+      }
+
+
+    } catch (error) {
+      print(error);
+      return 0;
+    }
+  }
+
+  Future<String> _fetchGameDescription(int appId) async {
+    final String url =
+        "https://store.steampowered.com/api/appdetails?appids=$appId";
+
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> gameData = responseData["$appId"];
+      final Map<String, dynamic> gameDetails = gameData['data'];
+      final String gameDescription = gameDetails['detailed_description'];
+
+      return gameDescription;
     } catch (error) {
       print(error);
       return "";
@@ -163,19 +224,22 @@ class _CardInfosState extends State<CardInfos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: ListView.builder(
         itemCount: _topGames.length,
         itemBuilder: (BuildContext context, int i) {
           final LinkedHashMap<Object, dynamic> game = _topGames[i];
           return Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/fondcard.png"),
                     fit: BoxFit.cover),
-                borderRadius: BorderRadius.circular(
-                    12.0), // sets the rounded corners of the card's content area
-                color: const Color(0xFF1A2025),
+
+                color: Color(0xFF1A2025),
                // sets the background color of the card's content area
               ),
               child: Row(
@@ -183,6 +247,7 @@ class _CardInfosState extends State<CardInfos> {
                 children: [
                   Image.network(game["image"], scale: 1.3, width: 140,height:90),
                   Column(
+
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
@@ -228,13 +293,12 @@ class _CardInfosState extends State<CardInfos> {
                       ]),
                   ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('En savoir plus')),
-                      );
+                      Navigator.pushNamed(context,'/detail', arguments: { 'title':  game['title'], 'image':game["image"],'infos':game['infos'],'description':game['description'] ,'review':game['review']});
+
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor : const Color(0xFF636AF6),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 90),
                     ),
@@ -257,9 +321,11 @@ class CardData {
   final String prix;
   final List<dynamic> infos;
   final String image;
+  final String description;
+  final String review;
 
   CardData(
-      {required this.title,required this.infos,required this.image,required this.prix});
+      {required this.title,required this.infos,required this.image,required this.prix,required this.description,required this.review});
 
   factory CardData.fromJson(Map<List<dynamic>, dynamic> json) {
     return CardData(
@@ -267,6 +333,8 @@ class CardData {
       infos: json['infos'],
       image: json['image'],
       prix: json['prix'],
+      description: json['description'],
+      review: json['review'],
 
     );
   }

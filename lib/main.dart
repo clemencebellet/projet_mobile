@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projet_1/detail.dart';
 import 'package:projet_1/widgets/card.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
-import 'package:projet_1/detaildunjeu.dart';
+
 
 import 'connexion.dart';
 import 'package:firebase_core/firebase_core.dart';
