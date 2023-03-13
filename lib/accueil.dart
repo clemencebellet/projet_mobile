@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/card.dart';
@@ -8,6 +9,11 @@ class Accueil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> args =
+    ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
+
+    String userId = args['userId'];
+    print(args);
     return Scaffold(
 
 
@@ -33,10 +39,13 @@ class Accueil extends StatelessWidget {
           actions: <Widget>[
 
             IconButton(
+
               icon: const Icon(Icons.favorite),
               color: Colors.white,
+
               tooltip: 'Voir les favoris',
               onPressed: () {
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Voilà la liste des favoris')),
                 );
@@ -59,6 +68,7 @@ class Accueil extends StatelessWidget {
       body: SafeArea(
 
           child : Column(
+
           crossAxisAlignment: CrossAxisAlignment.start,
           children:<Widget> [
             Container(
@@ -162,6 +172,7 @@ class Accueil extends StatelessWidget {
                   left: 20,
                   child: ElevatedButton(
                     onPressed: () {
+                      print(userId);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('En savoir plus...')),
                       );
@@ -201,9 +212,9 @@ class Accueil extends StatelessWidget {
                     decoration: TextDecoration.underline),
               ),
             ),
-            const Expanded(
+             Expanded(
               child: SizedBox(
-                child: CardInfos(),
+                child: CardInfos(user: userId),
               )
             )
           ],

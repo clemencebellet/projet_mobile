@@ -88,6 +88,7 @@ class _ConnexionState extends State<Connexion> {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
+      String userId = user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
 
@@ -222,11 +223,13 @@ class _ConnexionState extends State<Connexion> {
                 onPressed: () async {
 
 User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
-print(user);
-if(user!=null){
+//print(user?.uid);
+
+  print(user!.uid);
+  String userId = user!.uid;
   // ignore: use_build_context_synchronously
-  Navigator.pushNamed(context,'/accueil');
-}
+  Navigator.pushNamed(context,'/accueil', arguments : {'userId': userId});
+
                 },
                 child: const Center(
                   child: Text(

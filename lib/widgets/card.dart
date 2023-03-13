@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' as Io;
@@ -9,7 +10,8 @@ import 'dart:typed_data';
 import 'package:projet_1/detail.dart';
 
 class CardInfos extends StatefulWidget {
-  const CardInfos({super.key});
+    final String user ;
+  const  CardInfos({Key? key, required  this.user}) : super(key:key);
 
   @override
   _CardInfosState createState() => _CardInfosState();
@@ -293,7 +295,7 @@ class _CardInfosState extends State<CardInfos> {
                       ]),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context,'/detail', arguments: { 'title':  game['title'], 'image':game["image"],'infos':game['infos'],'description':game['description'] ,'review':game['review']});
+                      Navigator.pushNamed(context,'/detail', arguments: { 'title':  game['title'], 'image':game["image"],'infos':game['infos'],'description':game['description'] ,'review':game['review'], 'prix':game['prix'], 'userId': widget.user});
 
                     },
                     style: ElevatedButton.styleFrom(

@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:projet_1/bdd.dart';
+import 'package:projet_1/jeumodel.dart';
 
 class Detail extends StatefulWidget {
   const Detail({super.key});
@@ -15,6 +17,8 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   Color _colorbuttonDescription = Color(0xFF1A2025);
   Color _colorbuttonAvis = Color(0xFF1A2025);
+  Color colorfavorites = Colors.white;
+  Color colorstar = Colors.white;
   bool isPressedDescription = false;
   bool isPressedAvis = false;
   final ScrollController _scrollController = ScrollController();
@@ -30,8 +34,10 @@ class _DetailState extends State<Detail> {
         ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
 
     String title = args['title'];
+    String userId = args['userId'];
     String image = args['image'];
     String infos = args['infos'];
+    String prix = args['prix'];
     String description = args['description'];
     String reviews = args['review'];
     double reviewsinteger = int.parse(reviews) as double;
@@ -55,24 +61,42 @@ class _DetailState extends State<Detail> {
           // Put an icon heart and a star in the app bar
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.favorite),
-              color: Colors.white,
-              tooltip: 'Voir les favoris',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Voilà la liste des favoris')),
-                );
+                setState(() {
+                  colorfavorites =Colors.red;
+                });
+                Bdd backend = Bdd();
+                backend.addJeux(Jeux(
+                  name: title,
+                  publisher: infos,
+                  prix: prix,
+                  img: image,
+                  userID: userId,
+
+
+                ));
+
+
               },
-            ),
+      icon: const Icon(Icons.favorite),
+      color: colorfavorites,
+
+
+
+              ),
+
             IconButton(
-              color: Colors.white,
-              icon: const Icon(Icons.star),
-              tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Voilà les favoris')),
-                );
+                setState(() {
+                  colorstar = Colors.yellow;
+                });
+
               },
+              icon: const Icon(Icons.star),
+              color: colorstar,
+
+
+
             ),
           ],
         ),
