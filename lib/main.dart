@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projet_1/bdd.dart';
 import 'package:projet_1/detail.dart';
+import 'package:projet_1/jeumodel.dart';
+import 'package:projet_1/likes.dart';
 import 'package:projet_1/widgets/card.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
+import 'package:projet_1/wishlist.dart';
 
 
 import 'connexion.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
+
 }
+
 
 class MyApp extends StatelessWidget{
   const MyApp({super.key});
@@ -37,6 +44,8 @@ class MyApp extends StatelessWidget{
         '/mdpoublie': (context) => Mdpoublie(),
         '/accueil': (context) => Accueil(),
         '/detail': (context) => Detail(),
+       '/likes': (context) => Likes(),
+        '/wishlist': (context) => Wishlist(),
 
 
 

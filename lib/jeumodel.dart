@@ -1,14 +1,19 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Jeux{
 
-  String? name, publisher, userID,  prix, img;
-
+  String? nom, publisher, userID,  prix, Urlimg;
+  Timestamp? jeuTimestamp;
   Jeux({
-    this.name,
+    this.nom,
     this.publisher,
     this.prix,
-    this.img,
+    this.Urlimg,
     this.userID,
+    //this.jeuTimestamp,
 });
+
+
 }

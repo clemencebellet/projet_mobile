@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../widgets/card.dart';
 
-final ScrollController _scrollController = ScrollController();
+final ScrollController scroll = ScrollController();
 class Accueil extends StatelessWidget {
   const Accueil({Key? key}) : super(key: key);
 
@@ -40,12 +41,12 @@ class Accueil extends StatelessWidget {
 
             IconButton(
 
-              icon: const Icon(Icons.favorite),
+              icon: SvgPicture.asset('Icones/like.svg'),
               color: Colors.white,
 
               tooltip: 'Voir les favoris',
               onPressed: () {
-
+                Navigator.pushNamed(context,'/likes', arguments : {'userId': userId});
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Voilà la liste des favoris')),
                 );
@@ -53,12 +54,10 @@ class Accueil extends StatelessWidget {
             ),
             IconButton(
               color: Colors.white,
-              icon: const Icon(Icons.star),
+              icon: SvgPicture.asset('Icones/whishlist.svg'),
               tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Voilà les favoris')),
-                );
+                Navigator.pushNamed(context,'/wishlist', arguments : {'userId': userId});
               },
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -17,11 +18,13 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   Color _colorbuttonDescription = Color(0xFF1A2025);
   Color _colorbuttonAvis = Color(0xFF1A2025);
-  Color colorfavorites = Colors.white;
-  Color colorstar = Colors.white;
+
+  String img1 = 'Icones/like.svg';
+  String img2 = 'Icones/whishlist.svg';
+
   bool isPressedDescription = false;
   bool isPressedAvis = false;
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scroll = ScrollController();
 
   @override
   void initState() {
@@ -45,6 +48,16 @@ class _DetailState extends State<Detail> {
     return Scaffold(
         backgroundColor: const Color(0xFF1A2025),
         appBar: AppBar(
+          leading : IconButton(
+            icon: SvgPicture.asset('Icones/back.svg'),
+            color: Colors.white,
+
+
+            onPressed: () {
+              Navigator.pushNamed(context,'/accueil',arguments : {'userId': userId});
+
+            },
+          ),
           title: const Text(
             textAlign: TextAlign.left,
             'Détail du jeu ',
@@ -63,14 +76,16 @@ class _DetailState extends State<Detail> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  colorfavorites =Colors.red;
+                  //icon: SvgPicture.asset('Icones/like_full.svg');
+                  img1 = 'Icones/like_full.svg';
                 });
                 Bdd backend = Bdd();
+
                 backend.addJeux(Jeux(
-                  name: title,
+                  nom: title,
                   publisher: infos,
                   prix: prix,
-                  img: image,
+                  Urlimg: image,
                   userID: userId,
 
 
@@ -78,8 +93,8 @@ class _DetailState extends State<Detail> {
 
 
               },
-      icon: const Icon(Icons.favorite),
-      color: colorfavorites,
+      icon: SvgPicture.asset(img1),
+
 
 
 
@@ -88,31 +103,30 @@ class _DetailState extends State<Detail> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  colorstar = Colors.yellow;
+
+                  img2 ='Icones/whishlist_full.svg';
                 });
 
               },
-              icon: const Icon(Icons.star),
-              color: colorstar,
+              icon: SvgPicture.asset(img2),
+
 
 
 
             ),
           ],
         ),
-        body: ListView(controller: _scrollController, children: <Widget>[
+        body: ListView(controller: scroll, children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Stack(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 297.1,
                     width: double.infinity,
-                    child: Image(
-                      image: AssetImage('assets/fondBASE.png'),
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.network(image, fit: BoxFit.cover,),
+
                   ),
                   Positioned(
                     bottom: 0,
@@ -130,7 +144,7 @@ class _DetailState extends State<Detail> {
                               image: AssetImage("assets/fonddetail.png"),
                               fit: BoxFit.cover),
                           color: Color(0xFF1A2025),
-                          // sets the background color of the card's content area
+
                         ),
                         child: Row(
                           children: [
