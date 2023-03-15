@@ -78,6 +78,7 @@ Widget NvCompte(BuildContext context) {
 }
 
 class _ConnexionState extends State<Connexion> {
+
   static Future<User?> loginUsingEmailPassword(
       {required String email,
       required String password,
@@ -91,14 +92,13 @@ class _ConnexionState extends State<Connexion> {
       String userId = user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-
-        print("No User found for that email");
-
+       print("user not found");
       }
+
     }
     return user;
   }
-
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
 
@@ -218,21 +218,45 @@ class _ConnexionState extends State<Connexion> {
               borderRadius: BorderRadius.circular(3.52),
             ),
             height: 46.89,
-            child: TextButton(
-
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(const Color(0xFF636af6))),
                 onPressed: () async {
 
-User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
-//print(user?.uid);
 
-  print(user!.uid);
+User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
+
+if(user==null)
+  {
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Erreur'),
+            content: const Text(
+                "L'email ou le mot de passe est incorrect "),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Fermer'))
+            ],
+          );
+        });
+  }
+else {
   String userId = user!.uid;
-  // ignore: use_build_context_synchronously
   Navigator.pushNamed(context,'/accueil', arguments : {'userId': userId});
+}
+
 
                 },
-                child: const Center(
-                  child: Text(
+                child:  Center(
+
+                  child: const Text(
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

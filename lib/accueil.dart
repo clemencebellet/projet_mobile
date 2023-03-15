@@ -3,10 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../widgets/card.dart';
+class Accueil extends StatefulWidget {
 
+  const  Accueil({Key? key}) : super(key:key);
+
+  @override
+  _AccueilState createState() => _AccueilState();
+
+
+}
 final ScrollController scroll = ScrollController();
-class Accueil extends StatelessWidget {
-  const Accueil({Key? key}) : super(key: key);
+class _AccueilState extends State<Accueil> {
+bool isLoading = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +223,7 @@ class Accueil extends StatelessWidget {
             ),
              Expanded(
               child: SizedBox(
-                child: CardInfos(user: userId),
+               child :  CardInfos(user: userId),
               )
             )
           ],

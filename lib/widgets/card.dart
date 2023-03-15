@@ -20,6 +20,7 @@ class CardInfos extends StatefulWidget {
 class _CardInfosState extends State<CardInfos> {
   List<dynamic> _topGames = [];
    List<dynamic> jeux =[];
+  bool isLoading = true;
 
 
 
@@ -67,6 +68,11 @@ class _CardInfosState extends State<CardInfos> {
       });
     } catch (error) {
       print(error);
+    }finally {
+      setState(() {
+        isLoading = false;
+        print('loading passe en faux');
+      });
     }
   }
 
@@ -221,101 +227,128 @@ class _CardInfosState extends State<CardInfos> {
   void initState() {
     super.initState();
     _fetchTopGames();
+
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Center(
+          child: CircularProgressIndicator()
+      );
+    }
+    else  {
     return Scaffold(
 
       body: ListView.builder(
+
         itemCount: _topGames.length,
         itemBuilder: (BuildContext context, int i) {
-          final LinkedHashMap<Object, dynamic> game = _topGames[i];
-          return Card(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-            ),
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/fondcard.png"),
-                    fit: BoxFit.cover),
 
-                color: Color(0xFF1A2025),
-               // sets the background color of the card's content area
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.network(game["image"], scale: 1.3, width: 140,height:90),
-                  Column(
+            final LinkedHashMap<Object, dynamic> game = _topGames[i];
+            if (_topGames.length != 0) {
+              return Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/fondcard.png"),
+                        fit: BoxFit.cover),
 
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          child: Text(
-                            game['title'],
-                            style: const TextStyle(
-
-                                fontFamily: 'ProximaNova-Regular',
-                                fontSize: 18.0,
-                                color: Color.fromARGB(255, 255, 255, 255)),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text(
-                            game['infos'],
-                            style: const TextStyle(
-
-                                fontFamily: 'ProximaNova-Regular',
-                                fontSize: 15.0,
-                                color: Color.fromARGB(255, 255, 255, 255))
-                          ),
-                        ),
-                        SizedBox(
-                          width: 200,
-
-                          child: Text(
-
-                            game['prix'],
-                            style: const TextStyle(
-
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15.0,
-                                fontFamily: 'ProximaNova-Regular',
-
-                                color: Color.fromARGB(255, 255, 255, 255))
-                          ),
-                        ),
-
-
-
-                      ]),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context,'/detail', arguments: { 'title':  game['title'], 'image':game["image"],'infos':game['infos'],'description':game['description'] ,'review':game['review'], 'prix':game['prix'], 'userId': widget.user});
-
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor : const Color(0xFF636AF6),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 90),
-                    ),
-                    child: const Text(
-                      'En savoir plus',
-                    ),
+                    color: Color(0xFF1A2025),
+                    // sets the background color of the card's content area
                   ),
-                ],
-              ),
-            ),
-          );
-        },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.network(
+                          game["image"], scale: 1.3, width: 140, height: 90),
+                      Column(
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 200,
+                              child: Text(
+                                game['title'],
+                                style: const TextStyle(
+
+                                    fontFamily: 'ProximaNova-Regular',
+                                    fontSize: 18.0,
+                                    color: Color.fromARGB(255, 255, 255, 255)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 200,
+                              child: Text(
+                                  game['infos'],
+                                  style: const TextStyle(
+
+                                      fontFamily: 'ProximaNova-Regular',
+                                      fontSize: 15.0,
+                                      color: Color.fromARGB(255, 255, 255, 255))
+                              ),
+                            ),
+                            SizedBox(
+                              width: 200,
+
+                              child: Text(
+
+                                  game['prix'],
+                                  style: const TextStyle(
+
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                      fontFamily: 'ProximaNova-Regular',
+
+                                      color: Color.fromARGB(255, 255, 255, 255))
+                              ),
+                            ),
+
+
+                          ]),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/detail', arguments: {
+                            'title': game['title'],
+                            'image': game["image"],
+                            'infos': game['infos'],
+                            'description': game['description'],
+                            'review': game['review'],
+                            'prix': game['prix'],
+                            'userId': widget.user
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0xFF636AF6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 90),
+                        ),
+                        child: const Text(
+                          'En savoir plus',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            else {
+              child:
+              const Text(
+                'Problème au niveau de la liste de jeu de API STEAM',
+              );
+            }
+}
       ),
+
     );
   }
+}
 }
 
 class CardData {

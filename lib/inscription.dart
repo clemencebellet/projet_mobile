@@ -11,6 +11,7 @@ class Inscription extends StatefulWidget {
 }
 
 class _InscriptionState extends State<Inscription> {
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -186,7 +187,7 @@ class _InscriptionState extends State<Inscription> {
                               borderRadius: BorderRadius.circular(3.52),
                             ),
                             height: 46.89,
-                            child: TextButton(
+                            child: ElevatedButton(
                                 style: TextButton.styleFrom(),
                                 onPressed: () {
                                   if (passwordController.text !=
@@ -202,7 +203,7 @@ class _InscriptionState extends State<Inscription> {
                                             content: const Text(
                                                 "Les mots de passe ne correspondent pas "),
                                             actions: [
-                                              TextButton(
+                                              ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
@@ -211,6 +212,7 @@ class _InscriptionState extends State<Inscription> {
                                           );
                                         });
                                   } else {
+
                                     FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: emailController.text,
@@ -223,7 +225,7 @@ class _InscriptionState extends State<Inscription> {
                                         context, '/accueil');
                                   }
                                 },
-                                child: const Center(
+                                child:  Center(
                                   child: Text(
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
