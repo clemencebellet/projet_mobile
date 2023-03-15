@@ -9,34 +9,36 @@ import 'jeumodel.dart';
 
 class Bdd{
 final CollectionReference _jeux = FirebaseFirestore.instance.collection('jeux');
+final CollectionReference _wish = FirebaseFirestore.instance.collection('wishlist');
 
 void addJeux(Jeux jeu )
 {
   _jeux.add({
     "UserId" : jeu.userID,
     "nom": jeu.nom,
-    "publisher " : jeu.publisher,
+    "publisher" : jeu.publisher,
     "prix" : jeu.prix,
     "Urlimg" : jeu.Urlimg,
+    "description" : jeu.description,
+    "review" : jeu.review,
     "jeuTimestamp" : FieldValue.serverTimestamp(),
   });
-}/*
-Stream<List<Jeux>> get jeux {
-  Query queryJeux = _jeux.orderBy('jeuTimestamp', descending: true);
-  return queryJeux.snapshots().map((snapshot){
-return snapshot.docs.map((doc){
-  print(doc.data());
-  return Jeux(
-    nom: doc.get('nom'),
-    publisher: doc.get('publisher'),
-    prix: doc.get('prix'),
-    Urlimg: doc.get('Urlimg'),
-    jeuTimestamp: doc.get('jeuTimestamp'),
-  );
-}).toList();
-  });
+}
 
-}*/
+void addWish(Jeux jeu )
+{
+  _wish.add({
+    "UserId" : jeu.userID,
+    "nom": jeu.nom,
+    "publisher" : jeu.publisher,
+    "prix" : jeu.prix,
+    "Urlimg" : jeu.Urlimg,
+    "description" : jeu.description,
+    "review" : jeu.review,
+    "jeuTimestamp" : FieldValue.serverTimestamp(),
+  });
+}
+
 Future getGames(String userId) async{
 List gameslikes =[];
 
@@ -44,7 +46,7 @@ List gameslikes =[];
     await _jeux.where("UserId", isEqualTo : userId).get().then((querySnapshot){
       querySnapshot.docs.forEach((element) {
 gameslikes.add(element.data());
-print("Ajout ${element.data()} to games ");
+
       });
     }
     );
@@ -57,5 +59,30 @@ print("Ajout ${element.data()} to games ");
   }
 
 }
+
+
+Future getWish(String userId) async{
+  List gameswish =[];
+
+  try{
+    await _wish.where("UserId", isEqualTo : userId).get().then((querySnapshot){
+      querySnapshot.docs.forEach((element) {
+        gameswish.add(element.data());
+        print("Ajout ${element.data()} to games ");
+      });
+    }
+    );
+    return gameswish;
+  }catch(e)
+  {
+    print(e.toString());
+    return null;
+
+  }
+
+}
+
+
+
 
 }

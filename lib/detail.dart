@@ -48,14 +48,12 @@ class _DetailState extends State<Detail> {
     return Scaffold(
         backgroundColor: const Color(0xFF1A2025),
         appBar: AppBar(
-          leading : IconButton(
+          leading: IconButton(
             icon: SvgPicture.asset('Icones/back.svg'),
             color: Colors.white,
-
-
             onPressed: () {
-              Navigator.pushNamed(context,'/accueil',arguments : {'userId': userId});
-
+              Navigator.pushNamed(context, '/accueil',
+                  arguments: {'userId': userId});
             },
           ),
           title: const Text(
@@ -87,32 +85,30 @@ class _DetailState extends State<Detail> {
                   prix: prix,
                   Urlimg: image,
                   userID: userId,
-
-
+                  description: description,
+                  review: reviews,
                 ));
-
-
               },
-      icon: SvgPicture.asset(img1),
-
-
-
-
-              ),
-
+              icon: SvgPicture.asset(img1),
+            ),
             IconButton(
               onPressed: () {
                 setState(() {
-
-                  img2 ='Icones/whishlist_full.svg';
+                  img2 = 'Icones/whishlist_full.svg';
                 });
+                Bdd backend = Bdd();
 
+                backend.addWish(Jeux(
+                  nom: title,
+                  publisher: infos,
+                  prix: prix,
+                  Urlimg: image,
+                  userID: userId,
+                  description: description,
+                  review: reviews,
+                ));
               },
               icon: SvgPicture.asset(img2),
-
-
-
-
             ),
           ],
         ),
@@ -125,8 +121,10 @@ class _DetailState extends State<Detail> {
                   SizedBox(
                     height: 297.1,
                     width: double.infinity,
-                    child: Image.network(image, fit: BoxFit.cover,),
-
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
@@ -144,7 +142,6 @@ class _DetailState extends State<Detail> {
                               image: AssetImage("assets/fonddetail.png"),
                               fit: BoxFit.cover),
                           color: Color(0xFF1A2025),
-
                         ),
                         child: Row(
                           children: [
@@ -253,37 +250,55 @@ class _DetailState extends State<Detail> {
                     ])),
               ),
               SizedBox(height: 25),
-
-           Center(
-              child: isPressedDescription
-                  ? Html(data: description, style: {
-                      "html": Style(
-                        color: Colors.white,
-                        fontFamily: 'ProximaNova-Regular',
-                        fontSize: FontSize(15.265845),
-                      ),
-                    })
-                  : Container(),
-            ),
+              Center(
+                child: isPressedDescription
+                    ? Html(data: description, style: {
+                        "html": Style(
+                          color: Colors.white,
+                          fontFamily: 'ProximaNova-Regular',
+                          fontSize: FontSize(15.265845),
+                        ),
+                      })
+                    : Container(),
+              ),
               Center(
                 child: isPressedAvis
-                  ? RatingBar.builder(
-                      initialRating: reviewsinteger,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 10,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size:4,
-                      ),
-                      onRatingUpdate: (double value) {
-                        print(value);
-                      },
-                    )
-                  : Container(),
+                    ? Card(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                        color: Color(0xFF1E262C),
+                        child: Column(children: [
+                          const Text(
+                            'Avis global du jeu ',
+                            style: TextStyle(
+                              fontSize: 15.27,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "ProximaNova-Regular",
+                              decoration: TextDecoration.underline,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RatingBar.builder(
+                            initialRating: reviewsinteger,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 10,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Color(0xFFF5A623),
+                              size: 1,
+                            ),
+                            onRatingUpdate: (double value) {
+                              print(value);
+                            },
+                          )
+                        ]))
+                    : Container(),
               )
             ],
           ),

@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'package:projet_1/jeumodel.dart';
 import 'package:provider/provider.dart';
 import './bdd.dart';
-import '../widgets/likescard.dart';
+
 
 class Likes extends StatefulWidget {
   Likes({Key? key}) : super(key: key) {
@@ -85,6 +85,7 @@ else {
         elevation: 40,
 
         backgroundColor: const Color(0xFF1A2025),
+
         // Put an icon heart and a star in the app bar
 
       ),
@@ -93,15 +94,93 @@ else {
 
       child : Center(
 
-        child: Container(
+         child: Container(
+
           child: gameslikes.length != 0 ? ListView.builder(
   itemCount: gameslikes.length,
   itemBuilder: (context,index)
   {
     return Card(
-      child : ListTile(
-        title : Text(gameslikes[index]['nom']),
-      )
+
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        child: Container(
+
+        decoration: const BoxDecoration(
+        image: DecorationImage(
+        image: AssetImage("assets/fondcard.png"),
+    fit: BoxFit.cover),
+
+    color: Color(0xFF1A2025),
+  // sets the background color of the card's content area
+  ),
+   child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+    Image.network(gameslikes[index]['Urlimg'], scale: 1.3, width: 140,height:90),
+             Column(
+
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 200,
+                child: Text(
+                  gameslikes[index]['nom'],
+                  style: const TextStyle(
+
+                      fontFamily: 'ProximaNova-Regular',
+                      fontSize: 18.0,
+                      color: Color.fromARGB(255, 255, 255, 255)),
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: Text(
+                    gameslikes[index]['publisher '],
+                    style: const TextStyle(
+                        fontFamily: 'ProximaNova-Regular',
+                        fontSize: 15.0,
+                        color: Color.fromARGB(255, 255, 255, 255))
+                ),
+              ),
+              SizedBox(
+                width: 200,
+
+                child: Text(
+
+                    gameslikes[index]['prix'],
+                    style: const TextStyle(
+
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        fontFamily: 'ProximaNova-Regular',
+
+                        color: Color.fromARGB(255, 255, 255, 255))
+                ),
+              ),
+
+
+
+            ]),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context,'/detail', arguments: { 'title':  gameslikes[index]['nom'], 'image':gameslikes[index]['Urlimg'],'infos':gameslikes[index]['publisher '],'description':gameslikes[index]['description'] ,'review':gameslikes[index]['review'], 'prix':gameslikes[index]['prix'], 'userId': gameslikes[index]['UserId']});
+
+        },
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor : const Color(0xFF636AF6),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 4, vertical: 90),
+        ),
+        child: const Text(
+          'En savoir plus',
+        ),
+      ),
+    ]
+  )
+    )
     );
   },
 ): Container(
@@ -123,35 +202,6 @@ else {
         ),
 
 
-
-      //child : ListView.builder(
-        //itemCount : _jeux.length,
-          //itemBuilder : (_,index)
-        //{
-         // return LikesCard(jeu: _jeux[index],UserId: userId);
-        //}
-
-
-        /*margin: EdgeInsets.only(top: 150),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      SvgPicture.asset('Icones/empty_likes.svg', width: 94, height: 94),
-        Text(
-          'Vous n’avez encore pas liké de contenu. \n '
-              'Cliquez sur le coeur pour en rajouter.',
-          style: TextStyle(
-            color: Colors.white,
-
-            fontSize: 15.27,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'ProximaNova-Regular'
-          ),
-        ),
-
-      ]
-    )*/
-    //)
     ])
         ))
     ),
@@ -159,12 +209,3 @@ else {
     ));
   }}
 
-    /* child: StreamBuilder<List<Jeux>>(
-            stream: likesjeu,
-            builder:(context,snapshot) {
-              List<Jeux>? games = snapshot.data;
-              ListView.builder(
-                  itemCount: games?.length,
-                  itemBuilder: (_, index) {
-                    return LikesCard(jeu: games?[index], UserId: userId);
-                  }*/
