@@ -34,7 +34,7 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> args =
-        ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
+    ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
 
     String title = args['title'];
     String userId = args['userId'];
@@ -253,51 +253,51 @@ class _DetailState extends State<Detail> {
               Center(
                 child: isPressedDescription
                     ? Html(data: description, style: {
-                        "html": Style(
-                          color: Colors.white,
-                          fontFamily: 'ProximaNova-Regular',
-                          fontSize: FontSize(15.265845),
-                        ),
-                      })
+                  "html": Style(
+                    color: Colors.white,
+                    fontFamily: 'ProximaNova-Regular',
+                    fontSize: FontSize(15.265845),
+                  ),
+                })
                     : Container(),
               ),
               Center(
                 child: isPressedAvis
                     ? Card(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    color: Color(0xFF1E262C),
+                    child: Column(children: [
+                      const Text(
+                        'Avis global du jeu ',
+                        style: TextStyle(
+                          fontSize: 15.27,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "ProximaNova-Regular",
+                          decoration: TextDecoration.underline,
+                          color: Colors.white,
                         ),
-                        color: Color(0xFF1E262C),
-                        child: Column(children: [
-                          const Text(
-                            'Avis global du jeu ',
-                            style: TextStyle(
-                              fontSize: 15.27,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "ProximaNova-Regular",
-                              decoration: TextDecoration.underline,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          RatingBar.builder(
-                            initialRating: reviewsinteger,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 10,
-                            itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Color(0xFFF5A623),
-                              size: 1,
-                            ),
-                            onRatingUpdate: (double value) {
-                              print(value);
-                            },
-                          )
-                        ]))
+                      ),
+                      const SizedBox(height: 10),
+                      RatingBar.builder(
+                        initialRating: reviewsinteger,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 10,
+                        itemPadding:
+                        const EdgeInsets.symmetric(horizontal: 5.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Color(0xFFF5A623),
+                          size: 1,
+                        ),
+                        onRatingUpdate: (double value) {
+                          print(value);
+                        },
+                      )
+                    ]))
                     : Container(),
               )
             ],

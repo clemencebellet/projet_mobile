@@ -1,18 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
-import 'package:projet_1/jeumodel.dart';
-import 'package:provider/provider.dart';
+
 import './bdd.dart';
 
 
 class Wishlist extends StatefulWidget {
-  Wishlist({Key? key}) : super(key: key) {
-  }
+  const Wishlist({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _WishlistState createState() => _WishlistState();
 }
 
@@ -50,7 +47,7 @@ class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> args =
-    ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     String userId = args['userId'];
     fetchDatabase(userId);
     return Scaffold(
@@ -62,7 +59,7 @@ class _WishlistState extends State<Wishlist> {
             icon: SvgPicture.asset('Icones/close.svg'),
             color: Colors.white,
 
-            tooltip: 'Voir les favoris',
+
             onPressed: () {
               Navigator.pushNamed(context,'/accueil',arguments : {'userId': userId});
               ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +91,7 @@ class _WishlistState extends State<Wishlist> {
           child : Center(
 
               child: Container(
-                  child: gameswish.length != 0 ? ListView.builder(
+                  child: gameswish.isNotEmpty ? ListView.builder(
                     itemCount: gameswish.length,
                     itemBuilder: (context,index)
                     {
@@ -185,7 +182,7 @@ class _WishlistState extends State<Wishlist> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             SvgPicture.asset('Icones/empty_wishlist.svg', width: 94, height: 94),
-                            Text(
+                            const Text(
                               'Vous n’avez encore pas liké de contenu. \n '
                                   'Cliquez sur l’étoile pour en rajouter.',
                               style: TextStyle(

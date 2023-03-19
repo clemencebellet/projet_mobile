@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projet_1/bdd.dart';
 import 'package:projet_1/detail.dart';
-import 'package:projet_1/jeumodel.dart';
 import 'package:projet_1/likes.dart';
-import 'package:projet_1/widgets/card.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
+import 'package:projet_1/search.dart';
 import 'package:projet_1/wishlist.dart';
 
 
@@ -46,6 +43,7 @@ class MyApp extends StatelessWidget{
         '/detail': (context) => Detail(),
        '/likes': (context) => Likes(),
         '/wishlist': (context) => Wishlist(),
+        '/search': (context) => Search(),
 
 
 

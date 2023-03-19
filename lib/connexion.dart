@@ -3,9 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projet_1/inscription.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 class Connexion extends StatefulWidget {
   const Connexion({super.key});
@@ -79,6 +77,8 @@ Widget NvCompte(BuildContext context) {
 
 class _ConnexionState extends State<Connexion> {
 
+ /* Methode pour verifier l'existence d'un utilisateur dans le Firebase */
+
   static Future<User?> loginUsingEmailPassword(
       {required String email,
       required String password,
@@ -98,19 +98,19 @@ class _ConnexionState extends State<Connexion> {
     }
     return user;
   }
-  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
 
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Stack(
         children: <Widget>[
           Container(
-
               height: double.infinity,
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -165,7 +165,7 @@ class _ConnexionState extends State<Connexion> {
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                     border: InputBorder.none,
-                    //contentPadding: EdgeInsets.only(top:10),
+
 
                     hintText: 'E-mail',
                     hintStyle: TextStyle(
@@ -229,6 +229,7 @@ User? user = await loginUsingEmailPassword(email: emailController.text, password
 if(user==null)
   {
 
+    // ignore: use_build_context_synchronously
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -248,15 +249,16 @@ if(user==null)
         });
   }
 else {
-  String userId = user!.uid;
+  String userId = user.uid;
+  // ignore: use_build_context_synchronously
   Navigator.pushNamed(context,'/accueil', arguments : {'userId': userId});
 }
 
 
                 },
-                child:  Center(
+                child:  const Center(
 
-                  child: const Text(
+                  child: Text(
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

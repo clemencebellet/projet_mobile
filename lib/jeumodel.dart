@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,7 +13,7 @@ class Jeux{
     this.userID,
     this.description,
     this.review,
-    //this.jeuTimestamp,
+    this.jeuTimestamp,
 });
 
 

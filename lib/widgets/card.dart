@@ -1,13 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' as Io;
 
-import 'dart:typed_data';
-
-import 'package:projet_1/detail.dart';
 
 class CardInfos extends StatefulWidget {
     final String user ;
@@ -43,13 +38,15 @@ class _CardInfosState extends State<CardInfos> {
         final int appId = gamesList[i]['appid'];
 
 
-    final String gameTitle = await _fetchGameTitle(appId);
+    final Object gameTitle = await _fetchGameTitle(appId);
         final Object gameInfos = await _fetchGameInfos(appId);
-        final String gameCover = await _fetchGameCover(appId);
-        final String gamePrice = await _fetchGamePrice(appId);
-        final String gameDescription = await _fetchGameDescription(appId);
+        final Object gameCover = await _fetchGameCover(appId);
+        final Object gamePrice = await _fetchGamePrice(appId);
+        final Object gameDescription = await _fetchGameDescription(appId);
         final Object gameReviews = await _fetchGameReviewsStar(appId);
 
+if(gameInfos!=Null && gameCover!=Null && gamePrice!=Null && gameDescription !=Null && gameTitle != Null && gameReviews != Null)
+  {
         topGames.add({
           "title": gameTitle,
           "infos": gameInfos,
@@ -61,6 +58,9 @@ class _CardInfosState extends State<CardInfos> {
 
         });
       }
+else {
+  _topGames == null;
+}}
 
       setState(() {
         _topGames = topGames;
@@ -80,7 +80,7 @@ class _CardInfosState extends State<CardInfos> {
 
 
 
-  Future<String> _fetchGameCover(int appId) async {
+  Future<Object> _fetchGameCover(int appId) async {
 
 
     final String url =
@@ -94,15 +94,21 @@ class _CardInfosState extends State<CardInfos> {
       final Map<String, dynamic> gameDetails = gameData['data'];
       final String gameHeaderImage = gameDetails['header_image'];
 
+if(gameHeaderImage!=Null)
+  {
+    return gameHeaderImage;
+  }
+else{
+  return Null;
+}
 
-      return gameHeaderImage;
     } catch (error) {
       print(error);
       return "";
     }
   }
 
-  Future<String> _fetchGameTitle(int appId) async {
+  Future<Object> _fetchGameTitle(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
 
@@ -112,7 +118,14 @@ class _CardInfosState extends State<CardInfos> {
       final Map<String, dynamic> gameData = responseData["$appId"];
       final Map<String, dynamic> gameDetails = gameData['data'];
       final String gameTitle = gameDetails['name'];
-      return gameTitle;
+      if(gameTitle!=Null)
+        {
+          return gameTitle;
+        }
+      else{
+        return Null;
+      }
+
     } catch (error) {
       print(error);
       return "";
@@ -131,9 +144,15 @@ class _CardInfosState extends State<CardInfos> {
 
       if (gameDetails != null && gameDetails.containsKey('review_score') ) {
         final int gameReview = gameDetails['review_score'];
+if(gameReview!=Null)
+  {
+    print(gameReview);
+    return gameReview.toString();
+  }
+else{
+  return Null;
+}
 
-        print(gameReview);
-        return gameReview.toString();
       } else {
         print('Aucune note trouvée pour l\'application $appId.');
         return "";
@@ -146,7 +165,7 @@ class _CardInfosState extends State<CardInfos> {
     }
   }
 
-  Future<String> _fetchGameDescription(int appId) async {
+  Future<Object> _fetchGameDescription(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
 
@@ -156,8 +175,14 @@ class _CardInfosState extends State<CardInfos> {
       final Map<String, dynamic> gameData = responseData["$appId"];
       final Map<String, dynamic> gameDetails = gameData['data'];
       final String gameDescription = gameDetails['detailed_description'];
+if(gameDescription!=Null)
+  {
+    return gameDescription;
+  }
+else{
+  return Null;
+}
 
-      return gameDescription;
     } catch (error) {
       print(error);
       return "";
@@ -180,17 +205,23 @@ class _CardInfosState extends State<CardInfos> {
 
 
       final List<String> gamePublisher = gameInfos.map((e) => e.toString()).toList();
+if(gamePublisher!=Null)
+  {
+    for(int i=0; i < gamePublisher.length; i++){
+      return gamePublisher[i].toString(); }
+    return gamePublisher;
+  }
+else{
+  return Null;
+}
 
-      for(int i=0; i < gamePublisher.length; i++){
-        return gamePublisher[i].toString(); }
-      return gamePublisher;
     } catch (error) {
       print(error);
       return fin;
     }
   }
 
-  Future<String> _fetchGamePrice(int appId) async {
+  Future<Object> _fetchGamePrice(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
 
@@ -203,8 +234,14 @@ class _CardInfosState extends State<CardInfos> {
 
       if(gameDetails != null && gameDetails.containsKey('final_formatted')) {
         final String gamePrice = gameDetails['final_formatted'];
+if(gamePrice!=Null)
+  {
+    return "Prix :$gamePrice";
+  }
+else{
+  return Null;
+}
 
-        return "Prix :$gamePrice";
       } else {
 
         return "0";
@@ -214,13 +251,6 @@ class _CardInfosState extends State<CardInfos> {
       return "";
     }
   }
-
-
-
-
-
-
-
 
 
   @override
@@ -233,7 +263,7 @@ class _CardInfosState extends State<CardInfos> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Center(
+      return const Center(
           child: CircularProgressIndicator()
       );
     }
@@ -245,21 +275,25 @@ class _CardInfosState extends State<CardInfos> {
         itemCount: _topGames.length,
         itemBuilder: (BuildContext context, int i) {
 
+
             final LinkedHashMap<Object, dynamic> game = _topGames[i];
-            if (_topGames.length != 0) {
+            if (_topGames!=null) {
               return Card(
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.zero,
                 ),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/fondcard.png"),
+                        colorFilter:
+                        ColorFilter.mode( Color(0xFF1A2025).withOpacity(0.5),
+                            BlendMode.modulate),
+
+                        image: NetworkImage(game["image"]),
                         fit: BoxFit.cover),
 
-                    color: Color(0xFF1A2025),
-                    // sets the background color of the card's content area
                   ),
+
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -340,7 +374,7 @@ class _CardInfosState extends State<CardInfos> {
             else {
               child:
               const Text(
-                'Problème au niveau de la liste de jeu de API STEAM',
+                'Problème au niveau de la liste de jeu de API STEAM, veuillez recharger la page',
               );
             }
 }
