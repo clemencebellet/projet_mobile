@@ -188,7 +188,8 @@ class _InscriptionState extends State<Inscription> {
                                 ),
                                 height: 46.89,
                                 child: ElevatedButton(
-                                    style: TextButton.styleFrom(),
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(const Color(0xFF636af6))),
                                     onPressed: () {
                                       if (passwordController.text !=
                                           verifpasswordController.text) {
