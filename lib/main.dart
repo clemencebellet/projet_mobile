@@ -6,7 +6,7 @@ import 'package:projet_1/mdpoublie.dart';
 import 'package:projet_1/accueil.dart';
 import 'package:projet_1/search.dart';
 import 'package:projet_1/wishlist.dart';
-import 'dart:html';
+
 
 
 import 'connexion.dart';

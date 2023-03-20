@@ -246,7 +246,7 @@ class _AccueilState extends State<Accueil> {
     ),
 
     ),
-                  Expanded(
+                  Flexible(
                       child: SizedBox(
                     child: CardInfos(user: userId),
                   ))

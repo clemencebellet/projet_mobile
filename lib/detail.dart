@@ -45,7 +45,7 @@ class _DetailState extends State<Detail> {
     String prix = args['prix'];
     String descriptionHTML = args['description'];
     String reviews = args['review'];
-    double reviewsinteger = int.parse(reviews) as double;
+    double reviewsinteger = double.parse(reviews);
     String description = descriptionHTML.replaceAll(RegExp('<[^>]*>'), '');
 
     return Scaffold(
