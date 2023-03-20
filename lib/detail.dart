@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_html/flutter_html.dart';
+
 import 'package:projet_1/bdd.dart';
 import 'package:projet_1/jeumodel.dart';
+
 
 class Detail extends StatefulWidget {
   const Detail({super.key});
@@ -19,8 +20,9 @@ class _DetailState extends State<Detail> {
   Color _colorbuttonDescription = Color(0xFF1A2025);
   Color _colorbuttonAvis = Color(0xFF1A2025);
 
-  String img1 = 'Icones/like.svg';
-  String img2 = 'Icones/whishlist.svg';
+  bool wishlist =false;
+  bool likes = false;
+
 
   bool isPressedDescription = false;
   bool isPressedAvis = false;
@@ -41,16 +43,19 @@ class _DetailState extends State<Detail> {
     String image = args['image'];
     String infos = args['infos'];
     String prix = args['prix'];
-    String description = args['description'];
+    String descriptionHTML = args['description'];
     String reviews = args['review'];
     double reviewsinteger = int.parse(reviews) as double;
+    String description = descriptionHTML.replaceAll(RegExp('<[^>]*>'), '');
 
     return Scaffold(
         backgroundColor: const Color(0xFF1A2025),
         appBar: AppBar(
           leading: IconButton(
-            icon: SvgPicture.asset('Icones/back.svg'),
-            color: Colors.white,
+            icon: const Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/accueil',
                   arguments: {'userId': userId});
@@ -74,8 +79,7 @@ class _DetailState extends State<Detail> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  //icon: SvgPicture.asset('Icones/like_full.svg');
-                  img1 = 'Icones/like_full.svg';
+                  likes=!likes;
                 });
                 Bdd backend = Bdd();
 
@@ -89,12 +93,14 @@ class _DetailState extends State<Detail> {
                   review: reviews,
                 ));
               },
-              icon: SvgPicture.asset(img1),
-            ),
+        icon:  Icon(
+      likes ? Icons.favorite : Icons.favorite_border,
+      color: Colors.white,
+    ),),
             IconButton(
               onPressed: () {
                 setState(() {
-                  img2 = 'Icones/whishlist_full.svg';
+                  wishlist=!wishlist;
                 });
                 Bdd backend = Bdd();
 
@@ -108,7 +114,10 @@ class _DetailState extends State<Detail> {
                   review: reviews,
                 ));
               },
-              icon: SvgPicture.asset(img2),
+              icon:  Icon(
+                wishlist ? Icons.star  : Icons.star_border,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -252,13 +261,14 @@ class _DetailState extends State<Detail> {
               SizedBox(height: 25),
               Center(
                 child: isPressedDescription
-                    ? Html(data: description, style: {
-                  "html": Style(
+                    ? Text(
+                  description,
+                  style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'ProximaNova-Regular',
-                    fontSize: FontSize(15.265845),
+                    fontSize: 15.265845,
                   ),
-                })
+                )
                     : Container(),
               ),
               Center(

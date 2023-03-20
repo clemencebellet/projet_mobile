@@ -56,7 +56,10 @@ class _LikesState extends State<Likes> {
 
 
           leading : IconButton(
-            icon: SvgPicture.asset('Icones/close.svg'),
+            icon:  Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
             color: Colors.white,
 
 
@@ -181,7 +184,12 @@ class _LikesState extends State<Likes> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SvgPicture.asset('Icones/empty_likes.svg', width: 94, height: 94),
+                             Image(
+                              image: AssetImage('assets/emptylikes.png'),
+                               height: 94,
+                               width: 94,
+                              fit: BoxFit.cover,
+                            ),
                             const Text(
                               'Vous n’avez encore pas liké de contenu. \n '
                                   'Cliquez sur le coeur  pour en rajouter.',

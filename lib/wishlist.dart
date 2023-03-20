@@ -56,7 +56,11 @@ class _WishlistState extends State<Wishlist> {
 
 
           leading : IconButton(
-            icon: SvgPicture.asset('Icones/close.svg'),
+
+        icon:  Icon(
+        Icons.close,
+        color: Colors.white,
+        ),
             color: Colors.white,
 
 
@@ -71,7 +75,7 @@ class _WishlistState extends State<Wishlist> {
 
           title: const Text(
             textAlign: TextAlign.left,
-            'Mes likes ',
+            'Ma Wishlist ',
             style: TextStyle(
               fontFamily: "GoogleSans-Bold",
               color: Colors.white,
@@ -181,7 +185,12 @@ class _WishlistState extends State<Wishlist> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SvgPicture.asset('Icones/empty_wishlist.svg', width: 94, height: 94),
+                            Image(
+                              image: AssetImage('assets/emptylist.png'),
+                              height: 94,
+                              width: 94,
+                              fit: BoxFit.cover,
+                            ),
                             const Text(
                               'Vous n’avez encore pas liké de contenu. \n '
                                   'Cliquez sur l’étoile pour en rajouter.',

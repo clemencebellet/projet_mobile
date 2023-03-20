@@ -46,7 +46,10 @@ class _AccueilState extends State<Accueil> {
               // Put an icon heart and a star in the app bar
               actions: <Widget>[
                 IconButton(
-                  icon: SvgPicture.asset('Icones/like.svg'),
+                  icon:  Icon(
+              Icons.favorite_border,
+              color: Colors.white,
+            ),
                   color: Colors.white,
                   tooltip: 'Voir les favoris',
                   onPressed: () {
@@ -60,7 +63,10 @@ class _AccueilState extends State<Accueil> {
                 ),
                 IconButton(
                   color: Colors.white,
-                  icon: SvgPicture.asset('Icones/whishlist.svg'),
+                  icon:  Icon(
+      Icons.star_border,
+    color: Colors.white,
+    ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/wishlist',
                         arguments: {'userId': userId});
