@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:projet_1/bdd.dart';
 import 'package:projet_1/jeumodel.dart';
+
 
 
 class Detail extends StatefulWidget {
@@ -43,10 +44,11 @@ class _DetailState extends State<Detail> {
     String image = args['image'];
     String infos = args['infos'];
     String prix = args['prix'];
-    String descriptionHTML = args['description'];
+    String description = args['description'];
     String reviews = args['review'];
     double reviewsinteger = double.parse(reviews);
-    String description = descriptionHTML.replaceAll(RegExp('<[^>]*>'), '');
+
+    //String description = descriptionHTML.replaceAll(RegExp('<[^>]*>'), '');
 
     return Scaffold(
         backgroundColor: const Color(0xFF1A2025),
@@ -125,6 +127,7 @@ class _DetailState extends State<Detail> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
               Stack(
                 children: [
                   SizedBox(
@@ -135,6 +138,7 @@ class _DetailState extends State<Detail> {
                       fit: BoxFit.cover,
                     ),
                   ),
+
                   Positioned(
                     bottom: 0,
                     left: 20,
@@ -145,23 +149,31 @@ class _DetailState extends State<Detail> {
                       ),
                       child: Container(
                         height: 110,
-                        width: 340,
-                        decoration: const BoxDecoration(
+                        decoration:  BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/fonddetail.png"),
+                              colorFilter:
+                              ColorFilter.mode( Color(0xFF1A2025).withOpacity(0.8),
+                                  BlendMode.modulate),
+
+                              image: NetworkImage(image),
                               fit: BoxFit.cover),
-                          color: Color(0xFF1A2025),
                         ),
+
                         child: Row(
                           children: [
-                            Image.network(image,
-                                scale: 1.3, width: 140, height: 90),
+                            Expanded(
+                              flex:1,
+                            child: Image.network(image,
+                                scale: 1.3, width: 140, height: 90),),
                             const SizedBox(width: 10),
-                            Column(
+                            Expanded(
+                              flex: 1,
+                            child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 30),
-                                  SizedBox(
+
+                                   SizedBox(
                                     child: Text(
                                       title,
                                       style: const TextStyle(
@@ -171,7 +183,8 @@ class _DetailState extends State<Detail> {
                                               255, 255, 255, 255)),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+
+
                                   SizedBox(
                                     width: 200,
                                     child: Text(infos,
@@ -181,12 +194,11 @@ class _DetailState extends State<Detail> {
                                             color: Color.fromARGB(
                                                 255, 255, 255, 255))),
                                   ),
-                                  const SizedBox(
-                                    width: 200,
-                                  ),
-                                ]),
+
+                                ]),),
                           ],
                         ),
+
                       ),
                     ),
                   ),
@@ -261,13 +273,10 @@ class _DetailState extends State<Detail> {
               SizedBox(height: 25),
               Center(
                 child: isPressedDescription
-                    ? Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'ProximaNova-Regular',
-                    fontSize: 15.265845,
-                  ),
+                    ? HtmlWidget(description,
+                textStyle : const TextStyle(color: Colors.white,
+                  fontFamily: 'ProximaNova-Regular',
+                  fontSize: 14)
                 )
                     : Container(),
               ),

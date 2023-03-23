@@ -67,7 +67,7 @@ class _WishlistState extends State<Wishlist> {
             onPressed: () {
               Navigator.pushNamed(context,'/accueil',arguments : {'userId': userId});
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Voilà la liste des favoris')),
+                const SnackBar(content: Text('Voilà votre wislist ')),
               );
             },
           ),
@@ -104,19 +104,28 @@ class _WishlistState extends State<Wishlist> {
                             borderRadius: BorderRadius.zero,
                           ),
                           child: Container(
-                              decoration: const BoxDecoration(
+                              decoration:  BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage("assets/fondcard.png"),
-                                    fit: BoxFit.cover),
+                                    colorFilter:
+                                    ColorFilter.mode(Color(0xFF1A2025).withOpacity(0.8),
+                                        BlendMode.modulate),
 
-                                color: Color(0xFF1A2025),
+                                    image: NetworkImage(gameswish[index]['Urlimg']),
+                                    fit: BoxFit.cover),
                                 // sets the background color of the card's content area
                               ),
                               child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.network(gameswish[index]['Urlimg'], scale: 1.3, width: 140,height:90),
-                                    Column(
+                    SizedBox(
+                    width: 15,
+                    ),
+                    Expanded(
+                    flex : 2 ,
+                    child: Container(
+                    padding: const EdgeInsets.symmetric(vertical : 20),
+                    child: Column(
 
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -146,7 +155,7 @@ class _WishlistState extends State<Wishlist> {
 
                                             child: Text(
 
-                                                gameswish[index]['prix'],
+                                                "Prix : " + gameswish[index]['prix'],
                                                 style: const TextStyle(
 
                                                     fontWeight: FontWeight.bold,
@@ -159,8 +168,10 @@ class _WishlistState extends State<Wishlist> {
 
 
 
-                                        ]),
-                                    ElevatedButton(
+                                        ]),),),
+                              Flexible(
+                                  flex:1,
+                                    child : ElevatedButton(
                                       onPressed: () {
                                         Navigator.pushNamed(context,'/detail', arguments: { 'title':  gameswish[index]['nom'], 'image':gameswish[index]['Urlimg'],'infos':gameswish[index]['publisher'],'description':gameswish[index]['description'] ,'review':gameswish[index]['review'], 'prix':gameswish[index]['prix'], 'userId': gameswish[index]['UserId']});
 
@@ -169,12 +180,16 @@ class _WishlistState extends State<Wishlist> {
                                         foregroundColor: Colors.white,
                                         backgroundColor : const Color(0xFF636AF6),
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 4, vertical: 90),
+                                            horizontal: 10,vertical : 45),
                                       ),
                                       child: const Text(
                                         'En savoir plus',
+                                          style: const TextStyle(
+                                              fontSize: 12.0,
+                                              fontFamily: 'ProximaNova-Regular',
+                                              color: Colors.white)
                                       ),
-                                    ),
+                                    ),),
                                   ]
                               )
                           )
@@ -187,8 +202,8 @@ class _WishlistState extends State<Wishlist> {
                           children: <Widget>[
                             Image(
                               image: AssetImage('assets/emptylist.png'),
-                              height: 94,
-                              width: 94,
+                              height: 100,
+                              width: 100,
                               fit: BoxFit.cover,
                             ),
                             const Text(

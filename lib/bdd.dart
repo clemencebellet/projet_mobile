@@ -66,7 +66,7 @@ class Bdd{
       await _wish.where("UserId", isEqualTo : userId).get().then((querySnapshot){
         querySnapshot.docs.forEach((element) {
           gameswish.add(element.data());
-          print("Ajout ${element.data()} to games ");
+
         });
       }
       );

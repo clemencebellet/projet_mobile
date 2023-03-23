@@ -83,7 +83,9 @@ class _AccueilState extends State<Accueil> {
               ],
               leading: new Container(),
             ),
-            body: SafeArea(
+
+        body :  SafeArea(
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -194,7 +196,7 @@ class _AccueilState extends State<Accueil> {
                         ),
                       ),
                       Positioned(
-                        top: 160,
+                        top: 150,
                         left: 20,
                         child: ElevatedButton(
                           onPressed: () {
@@ -246,13 +248,14 @@ class _AccueilState extends State<Accueil> {
     ),
 
     ),
-                  Flexible(
+                  Expanded(
                       child: SizedBox(
                     child: CardInfos(user: userId),
                   ))
                 ],
               ),
-            ),
+              ),
+
           )
         : const Scaffold(
             backgroundColor: Color(0xFF1A2025),
