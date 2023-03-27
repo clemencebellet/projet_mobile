@@ -25,7 +25,6 @@ class _AccueilState extends State<Accueil> {
 
     String userId = args['userId'];
     TextEditingController searchController = TextEditingController();
-    print(args);
     return userId != null
         ? Scaffold(
             backgroundColor: const Color(0xFF1A2025),
@@ -108,7 +107,7 @@ class _AccueilState extends State<Accueil> {
                     icon: const Icon(Icons.search, color: Color(0xFF636AF6), size: 30.0),
                     onPressed: () {
                       Navigator.pushNamed(context, '/search',
-                          arguments: {'userId': userId, 'search':searchController});
+                          arguments: {'userId': userId, 'search':searchController.text});
                     },
                   ),
 
@@ -181,7 +180,7 @@ class _AccueilState extends State<Accueil> {
                         top: 100,
                         left: 20,
                         child: Text(
-                          'Lorem ipsum dolor sit amet\nconsectetur adipisicing  elit.',
+                          'Profitez  de Ultime de Titanfall™ 2',
                           style: TextStyle(
                             color: Colors.white,
                             shadows: [
@@ -206,7 +205,7 @@ class _AccueilState extends State<Accueil> {
                                   'https://image.api.playstation.com/cdn/EP0006/CUSA04013_00/4bI5D3WvesQPmegKpGINAimOsS27D688.png',
                               'infos': 'Electronic Arts',
                               'description':
-                                  'Profitez de l edition Ultime de Titanfall™ 2 pour plonger au coeur de l un des FPS les plus novateurs de 2016 ! Retrouvez tout le contenu de l édition Deluxe Digitale et obtenez le Pack de démarrage, vous offrant un accès instantané à toutes les classes de Titans et de pilotes ainsi qu à des fonds, des jetons XP double et une peinture de guerre pour la carabine R-201 afin de combattre avec style à la Frontière. L édition Ultime comprend le jeu de base Titanfall™ 2, tout le contenu de l édition Deluxe (Titans Scorch Prime et Ion Prime, peinture de guerre édition Deluxe pour les 6 Titans, camouflage édition Deluxe pour tous les Titans, pilotes et armes, personnalisations de cockpit Deluxe pour les 6 Titans, emblème édition Deluxe) et le Pack de démarrage (accès instantané à tous les Titans et à toutes les capacités tactiques de pilote, 500 jetons pour débloquer des équipements, des optimisations cosmétiques et du matériel, 10 jetons XP double et la peinture de guerre Souterrain pour la carabine R-201).',
+                                  'Profitez de l''edition Ultime de Titanfall™ 2 pour plonger au coeur de l''un des FPS les plus novateurs de 2016 ! Retrouvez tout le contenu de l édition Deluxe Digitale et obtenez le Pack de démarrage, vous offrant un accès instantané à toutes les classes de Titans et de pilotes ainsi qu à des fonds, des jetons XP double et une peinture de guerre pour la carabine R-201 afin de combattre avec style à la Frontière. L édition Ultime comprend le jeu de base Titanfall™ 2, tout le contenu de l édition Deluxe (Titans Scorch Prime et Ion Prime, peinture de guerre édition Deluxe pour les 6 Titans, camouflage édition Deluxe pour tous les Titans, pilotes et armes, personnalisations de cockpit Deluxe pour les 6 Titans, emblème édition Deluxe) et le Pack de démarrage (accès instantané à tous les Titans et à toutes les capacités tactiques de pilote, 500 jetons pour débloquer des équipements, des optimisations cosmétiques et du matériel, 10 jetons XP double et la peinture de guerre Souterrain pour la carabine R-201).',
                               'review': '9',
                               'prix': '29,99€',
                               'userId': userId,

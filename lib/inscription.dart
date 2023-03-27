@@ -3,14 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Inscription extends StatefulWidget {
-  const Inscription({super.key});
 
-  @override
-  _InscriptionState createState() => _InscriptionState();
-}
-
-class _InscriptionState extends State<Inscription> {
+class Inscription extends StatelessWidget {
   bool isLoading = true;
   @override
   Widget build(BuildContext context) {

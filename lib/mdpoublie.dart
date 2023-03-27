@@ -4,14 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projet_1/inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Mdpoublie extends StatefulWidget {
-  const Mdpoublie({super.key});
 
-  @override
-  _MdpoublieState createState() => _MdpoublieState();
-}
-
-class _MdpoublieState extends State<Mdpoublie> {
+class Mdpoublie extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
 
   @override

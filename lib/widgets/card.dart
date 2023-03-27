@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class CardInfos extends StatefulWidget {
   final String user;
 
+
   const CardInfos({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -125,7 +126,7 @@ class _CardInfosState extends State<CardInfos> {
       if (gameDetails != null && gameDetails.containsKey('review_score')) {
         final int gameReview = gameDetails['review_score'];
         if (gameReview != Null) {
-          print(gameReview);
+
           return gameReview.toString();
         } else {
           return Null;
