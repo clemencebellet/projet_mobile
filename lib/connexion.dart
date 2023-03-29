@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+///Bouton pour accéder à la page MdpOublié
+///// ignore: non_constant_identifier_names
 Widget MdpOublie(BuildContext context) {
   return Column(
     children: <Widget>[
@@ -13,8 +15,7 @@ Widget MdpOublie(BuildContext context) {
           child: TextButton(
               style: TextButton.styleFrom(),
               onPressed: () {
-                Navigator.pushNamed(context, '/mdpoublie');
-              },
+                Navigator.pushNamed(context, '/mdpoublie');},
               child: const Center(
                 child: Text(
                   textAlign: TextAlign.center,
@@ -24,13 +25,11 @@ Widget MdpOublie(BuildContext context) {
                     fontFamily: 'ProximaNova-Regular',
                     fontSize: 15.239016,
                   ),
-                  "Mot de passe oublié",
-                ),
-              )))
-    ],
-  );
-}
+                  "Mot de passe oublié",),)))],);}
 
+
+///Bouton pour accéder à la page Inscription
+// ignore: non_constant_identifier_names
 Widget NvCompte(BuildContext context) {
   return Column(
     children: <Widget>[
@@ -56,15 +55,12 @@ Widget NvCompte(BuildContext context) {
                     fontSize: 15.239016,
                   ),
                   "Créer un nouveau compte",
-                ),
-              )))
-    ],
-  );
-}
+                ),)))],);}
 
 class  Connexion extends StatelessWidget {
+  const Connexion({super.key});
 
-  /* Methode pour verifier l'existence d'un utilisateur dans le Firebase */
+  /// Methode pour verifier l'existence d'un utilisateur dans le Firebase
 
   static Future<User?> loginUsingEmailPassword(
       {required String email,
@@ -76,22 +72,21 @@ class  Connexion extends StatelessWidget {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
-      String userId = user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-        print("user not found");
-      }
-    }
+        print("user not found");}}
     return user;
   }
-
   @override
   Widget build(BuildContext context) {
+    ///Récupération des informations pour la connexion
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     return  Scaffold(
+      ///Définition du style des éléments de l'interface utilisateur
             body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
+              ///Stack permet de superposer les éléments
           child: Stack(
             children: <Widget>[
               Container(
@@ -102,6 +97,7 @@ class  Connexion extends StatelessWidget {
                         image: AssetImage("images/background.png"),
                         fit: BoxFit.cover),
                   ),
+                  ///Page qui va scroller verticalement
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 25, vertical: 92.73),
@@ -115,9 +111,7 @@ class  Connexion extends StatelessWidget {
                               fontFamily: "GoogleSans-Bold",
                               color: Colors.white,
                               fontSize: 30.53169,
-                            ),
-                          ),
-
+                            ),),
                         const SizedBox(height: 10),
                          const Text(
                             textAlign: TextAlign.center,
@@ -125,14 +119,9 @@ class  Connexion extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: "ProximaNova-Regular",
                               color: Colors.white,
-                              fontSize: 15.265845,
-                            ),
-                          ),
-
+                              fontSize: 15.265845,),),
                         const SizedBox(height: 40),
-
                         // --------------------------------------BOX POUR LE MAIL-------------------------------
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -157,10 +146,7 @@ class  Connexion extends StatelessWidget {
                                             color: Colors.white,
                                             fontFamily: 'ProximaNova-Regular',
                                             fontSize: 15.239016,
-                                          ))),
-                                )
-                          ],
-                        ),
+                                          ))),)],),
                         // --------------------------------------BOX POUR LE MDP -------------------------------
 
                         Column(
@@ -187,10 +173,7 @@ class  Connexion extends StatelessWidget {
                                             color: Colors.white,
                                             fontFamily: 'ProximaNova-Regular',
                                             fontSize: 15.239016,
-                                          ))),
-                                )
-                          ],
-                        ),
+                                          ))),)],),
 
                         // --------------------------------------BOX POUR LA CONNEXION -------------------------------
                         Column(
@@ -203,21 +186,19 @@ class  Connexion extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(3.52),
                                 ),
                                 height: 46.89,
-
                                 child :  ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
                                                 const Color(0xFF636af6))),
+                                    ///On appelle la méthode précédente pour quand le bouton est pressé
                                     onPressed: () async {
-
-
                                       User? user =
                                           await loginUsingEmailPassword(
                                               email: emailController.text,
                                               password: passwordController.text,
                                               context: context);
-
+                                      ///Si il n'existe pas ou si il y a une erreur on affiche une alerte
                                       if (user == null) {
                                         // ignore: use_build_context_synchronously
                                         showDialog(
@@ -227,25 +208,21 @@ class  Connexion extends StatelessWidget {
                                               return AlertDialog(
                                                 title: const Text('Erreur'),
                                                 content: const Text(
-                                                    "L'email ou le mot de passe est incorrect "),
+                                                    "L'utilisateur n'existe pas ou le mail/mdp est incorrect"),
                                                 actions: [
                                                   ElevatedButton(
                                                       onPressed: () {
                                                         Navigator.of(context)
-                                                            .pop();
-                                                      },
+                                                            .pop();},
                                                       child:
                                                           const Text('Fermer'))
-                                                ],
-                                              );
-                                            });
-                                      } else {
+                                                ],);});}
+                                      else {
                                         String userId = user.uid;
                                         // ignore: use_build_context_synchronously
                                         Navigator.pushNamed(context, '/accueil',
                                             arguments: {'userId': userId});
-                                      }
-                                    },
+                                      }},
                                     child: const Center(
                                       child: Text(
                                         textAlign: TextAlign.center,
@@ -254,19 +231,8 @@ class  Connexion extends StatelessWidget {
                                           fontFamily: 'ProximaNova-Regular',
                                           fontSize: 15.239016,
                                         ),
-                                        "Se connecter",
-                                      ),
-                                    )),
-                            )
-                          ],
-                        ),
+                                        "Se connecter",),)),)],),
                         NvCompte(context),
                         MdpOublie(context),
-                      ],
-                    ),
-                  ))
-            ],
-          ),
-        ));
-  }
-}
+                      ],),))],
+          ),));}}

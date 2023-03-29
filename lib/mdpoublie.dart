@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:projet_1/inscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+///MdpOublie est un stateless car on n'a pas besoin de gérer des etats internes
 
 class Mdpoublie extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
 
+  Mdpoublie({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      ///Définition du style des éléments de l'interface utilisateur
         body: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
+      ///Stack permet de superposer les éléments
       child: Stack(
         children: <Widget>[
           Container(
@@ -23,6 +27,8 @@ class Mdpoublie extends StatelessWidget {
                     image: AssetImage("images/background.png"),
                     fit: BoxFit.cover),
               ),
+
+              ///Page qui va scroller verticalement
               child: SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 92.73),
@@ -36,8 +42,7 @@ class Mdpoublie extends StatelessWidget {
                         fontFamily: "GoogleSans-Bold",
                         color: Colors.white,
                         fontSize: 30.53169,
-                      ),
-                    ),
+                      ),),
                     const SizedBox(height: 10),
                     const Text(
                       textAlign: TextAlign.center,
@@ -46,8 +51,7 @@ class Mdpoublie extends StatelessWidget {
                         fontFamily: "ProximaNova-Regular",
                         color: Colors.white,
                         fontSize: 15.265845,
-                      ),
-                    ),
+                      ),),
                     const SizedBox(height: 40),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +60,7 @@ class Mdpoublie extends StatelessWidget {
                         Container(
                           alignment: Alignment.centerLeft,
                           decoration: BoxDecoration(
-                            color: Color(0xFF1E262C),
+                            color: const Color(0xFF1E262C),
                             borderRadius: BorderRadius.circular(3.52),
                           ),
                           height: 46.89,
@@ -66,17 +70,12 @@ class Mdpoublie extends StatelessWidget {
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  //contentPadding: EdgeInsets.only(top:10),
-
                                   hintText: 'E-mail',
                                   hintStyle: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'ProximaNova-Regular',
                                     fontSize: 15.239016,
-                                  ))),
-                        )
-                      ],
-                    ),
+                                  ))),)],),
                     Column(
                       children: <Widget>[
                         const SizedBox(height: 100),
@@ -84,14 +83,13 @@ class Mdpoublie extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               color: const Color(0xFF636af6),
-                              borderRadius: BorderRadius.circular(3.52),
-                            ),
+                              borderRadius: BorderRadius.circular(3.52),),
                             height: 46.89,
                             child: TextButton(
                                 onPressed: () {
+                                  ///On envoie à l'adresse renseigné un mail pour rénitialiser
                                   FirebaseAuth.instance.sendPasswordResetEmail(
                                       email: emailController.text);
-
                                   Navigator.pushNamed(context, '/connexion');
                                 },
                                 child: const Center(
@@ -102,16 +100,6 @@ class Mdpoublie extends StatelessWidget {
                                       fontFamily: 'ProximaNova-Regular',
                                       fontSize: 15.239016,
                                     ),
-                                    "Renvoyer mon mot de passe",
-                                  ),
-                                )))
-                      ],
-                    ),
-                  ],
-                ),
-              ))
-        ],
-      ),
-    ));
-  }
-}
+                                    "Renvoyer mon mot de passe",),
+                                )))],),],),))],
+      ),));}}

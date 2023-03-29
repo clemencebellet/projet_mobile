@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+/// Search  est un Stateful Widget car des éléments du Widget peuvent changer donc nécessitent une gestion d'état interne.
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -12,38 +13,45 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-
+  ///Liste des jeux recherchés
   final List<dynamic> _searchResultat = [];
-
-
+  ///Boolean du loader vrai
   bool isLoading = true;
 
+  ///Méthode pour la recherche en fonction du mot en argument
   // ignore: non_constant_identifier_names
   Future<void> _SearchGames(String mot) async {
     String url = "https://steamcommunity.com/actions/SearchApps/$mot";
 
     try {
       final http.Response response = await http.get(Uri.parse(url));
-
       final List<dynamic> responseData = json.decode(response.body);
-
       final List<dynamic> gamesList = responseData;
 
-
-
+      ///Création d'une nouvelle liste pour ajouter les jeux
       final List<dynamic> searchResultat = [];
+
+      ///On efface la liste avant de rajouter des nouveaux jeux
       _searchResultat.clear();
+
+      ///On ajoute autant de jeux que l'API trouve pour le mot saisi
       for (int i = 0; i < gamesList.length; i++) {
+
+        ///Récupération des appId des jeux trouvés en fonction du mot
         final int appId = int.parse(gamesList[i]['appid']);
 
+
+        ///On appelle nos méthodes pour récupérer les infos en fonction des appId :
+        ///Titre - Publisher - Image - Prix - Description - Avis
+        ///
         final Object gameTitle = await _fetchGameTitle(appId);
         final Object gameInfos = await _fetchGameInfos(appId);
         final Object gameCover = await _fetchGameCover(appId);
         final Object gamePrice = await _fetchGamePrice(appId);
         final Object gameDescription = await _fetchGameDescription(appId);
         final Object gameReviews = await _fetchGameReviewsStar(appId);
-
-        searchResultat.add({
+        ///on ajoute à notre liste searchResultat les infos récupérés
+    searchResultat.add({
           "title": gameTitle,
           "infos": gameInfos,
           "image": gameCover,
@@ -55,16 +63,17 @@ class _SearchState extends State<Search> {
       }
 
       setState(() {
-        _searchResultat.clear();
+        ///Notre liste rempli des infos transmet ces infos à l'autre liste
         _searchResultat.addAll(searchResultat);
       });
-    } finally {
+    } ///Une fois la récupération faite, le loader devient faux
+    finally {
       setState(() {
         isLoading = false;
       });
     }
   }
-
+  ///Méthode pour récupérer l'image du jeu en fonction de l'appId
   Future<Object> _fetchGameCover(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
@@ -86,7 +95,7 @@ class _SearchState extends State<Search> {
       return "";
     }
   }
-
+  ///Méthode pour récupérer le titre du jeu en fonction de l'appId
   Future<Object> _fetchGameTitle(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
@@ -108,6 +117,7 @@ class _SearchState extends State<Search> {
     }
   }
 
+  ///Méthode pour récupérer l'avis  du jeu en fonction de l'appId
   Future<Object> _fetchGameReviewsStar(int appId) async {
     final String url =
         "https://store.steampowered.com/appreviews/$appId?json=1";
@@ -134,7 +144,7 @@ class _SearchState extends State<Search> {
       return 0;
     }
   }
-
+  ///Méthode pour récupérer la description du jeu en fonction de l'appId
   Future<Object> _fetchGameDescription(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
@@ -157,6 +167,7 @@ class _SearchState extends State<Search> {
     }
   }
 
+  ///Méthode pour récupérer le publisher du jeu en fonction de l'appId
   Future<Object> _fetchGameInfos(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
@@ -185,6 +196,7 @@ class _SearchState extends State<Search> {
     }
   }
 
+  ///Méthode pour récupérer le prix du jeu en fonction de l'appId
   Future<Object> _fetchGamePrice(int appId) async {
     final String url =
         "https://store.steampowered.com/api/appdetails?appids=$appId";
@@ -199,7 +211,7 @@ class _SearchState extends State<Search> {
       if (gameDetails != null && gameDetails.containsKey('final_formatted')) {
         final String gamePrice = gameDetails['final_formatted'];
         if (gamePrice != null) {
-          return gamePrice;
+          return "$gamePrice";
         } else {
           return Null;
         }
@@ -210,7 +222,8 @@ class _SearchState extends State<Search> {
       return "";
     }
   }
-
+ ///Utilisation de didChangeDependencies plutot que InitState :
+  ///Car cette fonction va être appelée a chaque changement des dépendances du widget
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -222,27 +235,23 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    ///On récupére le mot et l'id de l'utilisateur
     Map<String, dynamic> args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     String userId = args['userId'];
     String searchmot = args['search'];
+
      return Scaffold(
          backgroundColor: const Color(0xFF1A2025),
          appBar: AppBar(
            leading: IconButton(
              icon: const Icon(
                Icons.close,
-               color: Colors.white,
-             ),
+               color: Colors.white,),
              color: Colors.white,
              onPressed: () {
                Navigator.pushNamed(context, '/accueil',
-                   arguments: {'userId': userId});
-               ScaffoldMessenger.of(context).showSnackBar(
-                 const SnackBar(content: Text('Voilà la liste des favoris')),
-               );
-             },
-           ),
+                   arguments: {'userId': userId});},),
 
            title: const Text(
              textAlign: TextAlign.left,
@@ -251,16 +260,14 @@ class _SearchState extends State<Search> {
                fontFamily: "GoogleSans-Bold",
                color: Colors.white,
                fontSize: 18,
-             ),
-           ),
+             ),),
            shadowColor: Colors.black,
            elevation: 40,
+           backgroundColor: const Color(0xFF1A2025),),
 
-           backgroundColor: const Color(0xFF1A2025),
-           // Put an icon heart and a star in the app bar
-         ),
       body: isLoading ? const Center(child: CircularProgressIndicator())
     : Column(
+        ///Affichage de la barre de recherche avec le mot saisi
         children :[
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -283,10 +290,8 @@ class _SearchState extends State<Search> {
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
                   vertical: 16.0,
-                ),
-              ),
-            ),
-          ),
+                ),),),),
+           ///Nombre de résultat de jeux récupérés
            Text(
             textAlign: TextAlign.left,
             'Nombre de résultat : ${_searchResultat.length}',
@@ -294,10 +299,10 @@ class _SearchState extends State<Search> {
               fontFamily: "GoogleSans-Bold",
               color: Colors.white,
               fontSize: 18,
-              decoration: TextDecoration.underline,
-            ),
-          ),
+              decoration: TextDecoration.underline,),),
+
       const SizedBox(height: 15,),
+
       Expanded(
       child : ListView.builder(
           itemCount: _searchResultat.length,
@@ -391,23 +396,11 @@ class _SearchState extends State<Search> {
                                 style: TextStyle(
                                     fontSize: 12.0,
                                     fontFamily: 'ProximaNova-Regular',
-                                    color: Colors.white)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-
-          ),
-      )],
-      ));
-  }
-  }
-
-
+                                    color: Colors.white)),),
+                        ),],),),
+                ),);}),
+      )],));}
+}
 class CardData {
   final String title;
   final String prix;

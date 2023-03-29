@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import './bdd.dart';
+
+/// Likes est un Stateful Widget car des éléments du Widget peuvent changer donc nécessitent une gestion d'état.
 
 class Likes extends StatefulWidget {
   const Likes({Key? key}) : super(key: key);
@@ -11,8 +11,6 @@ class Likes extends StatefulWidget {
   _LikesState createState() => _LikesState();
 }
 
-final ScrollController scroll = ScrollController();
-
 class _LikesState extends State<Likes> {
   List gameslikes = [];
 
@@ -21,28 +19,36 @@ class _LikesState extends State<Likes> {
     super.initState();
   }
 
+  /// Récupération des éléments de la Bdd pour les likes
+
+  // ignore: non_constant_identifier_names
   fetchDatabase(String User) async {
     dynamic res = await Bdd().getGames(User);
     if (res == null) {
-      print("error");
+      print("Erreur dans la récupération de la bdd");
     } else {
       setState(() {
         gameslikes = res;
-      });
-    }
-  }
+      });}}
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    /// Récupération arguments de la navigation entre les pages
+    Map<String, dynamic> args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     String userId = args['userId'];
+
+    /// Appel de la méthode de récuperation de likes en fonction de l'ID de l'utilisateur
+
     fetchDatabase(userId);
+
     return Scaffold(
+      ///Couleur de la page
         backgroundColor: const Color(0xFF1A2025),
+
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.close,
               color: Colors.white,
             ),
@@ -50,11 +56,7 @@ class _LikesState extends State<Likes> {
             onPressed: () {
               Navigator.pushNamed(context, '/accueil',
                   arguments: {'userId': userId});
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Voilà la liste des favoris')),
-              );
-            },
-          ),
+            },),
 
           title: const Text(
             textAlign: TextAlign.left,
@@ -63,14 +65,16 @@ class _LikesState extends State<Likes> {
               fontFamily: "GoogleSans-Bold",
               color: Colors.white,
               fontSize: 18,
-            ),
-          ),
+            ),),
           shadowColor: Colors.black,
           elevation: 40,
 
+          /// Couleur de l'App Bar
           backgroundColor: const Color(0xFF1A2025),
-          // Put an icon heart and a star in the app bar
         ),
+
+        /// SafeArea permet d'eviter les "obstables" pour les éléments "enfants", les problèmes d'affichage
+
         body: SafeArea(
           child: Center(
               child: Container(
@@ -78,7 +82,7 @@ class _LikesState extends State<Likes> {
                       ? ListView.builder(
                           itemCount: gameslikes.length,
                           itemBuilder: (context, index) {
-                            return Container(
+                            return SizedBox(
                                 height: 130.16,
                                 child: Card(
                                     shape: const RoundedRectangleBorder(
@@ -88,14 +92,12 @@ class _LikesState extends State<Likes> {
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                               colorFilter: ColorFilter.mode(
-                                                  Color(0xFF1A2025)
+                                                  const Color(0xFF1A2025)
                                                       .withOpacity(0.8),
                                                   BlendMode.modulate),
                                               image: NetworkImage(
                                                   gameslikes[index]['Urlimg']),
                                               fit: BoxFit.cover),
-
-                                          // sets the background color of the card's content area
                                         ),
                                         child: Row(
                                             mainAxisAlignment:
@@ -106,9 +108,11 @@ class _LikesState extends State<Likes> {
                                                   scale: 1.3,
                                                   width: 140,
                                                   height: 90),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 15,
                                               ),
+
+                                              ///Expanded permet à l'élément enfant d'occuper la place disponible
                                               Expanded(
                                                 flex: 2,
                                                 child: Container(
@@ -134,8 +138,7 @@ class _LikesState extends State<Likes> {
                                                                         255,
                                                                         255,
                                                                         255)),
-                                                          ),
-                                                        ),
+                                                          ),),
                                                         SizedBox(
                                                           width: 200,
                                                           child: Text(
@@ -151,15 +154,12 @@ class _LikesState extends State<Likes> {
                                                                           255,
                                                                           255,
                                                                           255,
-                                                                          255))),
-                                                        ),
+                                                                          255))),),
                                                         SizedBox(
                                                           width: 200,
                                                           child: Text(
-                                                              "Prix : " +
-                                                                  gameslikes[
-                                                                          index]
-                                                                      ['prix'],
+                                                              // ignore: prefer_interpolation_to_compose_strings
+                                                              "Prix : " + gameslikes[index]['prix'],
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
@@ -174,10 +174,8 @@ class _LikesState extends State<Likes> {
                                                                           255,
                                                                           255,
                                                                           255))),
-                                                        ),
-                                                      ]),
-                                                ),
-                                              ),
+                                                        ),]),),),
+                                              /// Le bouton va prendre ici 1/3 de la place contrairement a l'expanded ci dessus
                                               Flexible(
                                                 flex: 1,
                                                 child: ElevatedButton(
@@ -206,8 +204,7 @@ class _LikesState extends State<Likes> {
                                                           'userId':
                                                               gameslikes[index]
                                                                   ['UserId']
-                                                        });
-                                                  },
+                                                        });},
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     foregroundColor:
@@ -217,23 +214,20 @@ class _LikesState extends State<Likes> {
                                                     padding: const EdgeInsets
                                                             .symmetric(
                                                         horizontal: 10,
-                                                        vertical: 45),
-                                                  ),
+                                                        vertical: 45),),
                                                   child: const Text(
                                                       'En savoir plus',
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontSize: 12.0,
                                                           fontFamily:
                                                               'ProximaNova-Regular',
                                                           color: Colors.white)),
-                                                ),
-                                              ),
-                                            ]))));
-                          },
-                        )
+                                                ),),]))));},)
+
+                  /// Si la liste est vide, on affiche le emptylikes et un texte
                       : Container(
-                          margin: EdgeInsets.only(top: 150),
-                          child: Column(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Image(
@@ -242,7 +236,8 @@ class _LikesState extends State<Likes> {
                                   width: 100,
                                   fit: BoxFit.cover,
                                 ),
-                                const Text(
+                                SizedBox(height: 40),
+                                Text(
                                   'Vous n’avez encore pas liké de contenu. \n '
                                   'Cliquez sur le coeur  pour en rajouter.',
                                   style: TextStyle(
@@ -250,8 +245,4 @@ class _LikesState extends State<Likes> {
                                       fontSize: 15.27,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'ProximaNova-Regular'),
-                                ),
-                              ])))),
-        ));
-  }
-}
+                                ),])))),));}}

@@ -1,30 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../widgets/card.dart';
 
+/// Accueil  est un Stateful Widget car des éléments du Widget peuvent changer donc nécessitent une gestion d'état interne.
 class Accueil extends StatefulWidget {
   const Accueil({Key? key}) : super(key: key);
-
   @override
+  // ignore: library_private_types_in_public_api
   _AccueilState createState() => _AccueilState();
 }
 
+/// Initialisation de Firebase pour la déconnexion
 FirebaseAuth auth = FirebaseAuth.instance;
 
-final ScrollController scroll = ScrollController();
-
 class _AccueilState extends State<Accueil> {
+
+  ///Boolean pour le loader
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> args =
-        ModalRoute.of(context)?.settings?.arguments as Map<String, dynamic>;
-
+    /// Récupération arguments de la navigation entre les pages
+    Map<String, dynamic> args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     String userId = args['userId'];
+    /// Mot recherché par l'utilisateur
     TextEditingController searchController = TextEditingController();
+
     return userId != null
         ? Scaffold(
             backgroundColor: const Color(0xFF1A2025),
@@ -36,19 +37,18 @@ class _AccueilState extends State<Accueil> {
                   fontFamily: "GoogleSans-Bold",
                   color: Colors.white,
                   fontSize: 18,
-                ),
-              ),
+                ),),
               shadowColor: Colors.black,
               elevation: 40,
-
               backgroundColor: const Color(0xFF1A2025),
-              // Put an icon heart and a star in the app bar
+
               actions: <Widget>[
+
+                ///Accès aux likes
                 IconButton(
-                  icon:  Icon(
+                  icon:  const Icon(
               Icons.favorite_border,
-              color: Colors.white,
-            ),
+              color: Colors.white,),
                   color: Colors.white,
                   tooltip: 'Voir les favoris',
                   onPressed: () {
@@ -57,77 +57,65 @@ class _AccueilState extends State<Accueil> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                           content: Text('Voilà la liste des favoris')),
-                    );
-                  },
-                ),
+                    );},),
+
+                ///Accès à la wishlist
                 IconButton(
                   color: Colors.white,
-                  icon:  Icon(
-      Icons.star_border,
-    color: Colors.white,
-    ),
+                  tooltip: 'Voir la wishlist',
+                  icon:  const Icon(Icons.star_border, color: Colors.white,),
                   onPressed: () {
                     Navigator.pushNamed(context, '/wishlist',
-                        arguments: {'userId': userId});
-                  },
-                ),
+                        arguments: {'userId': userId});},),
+
+                ///Déconnexion
                 IconButton(
                   color: Colors.white,
-                  icon: Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
                     Navigator.pushNamed(context, '/connexion');
-                  },
-                ),
-              ],
-              leading: new Container(),
+                  },),],
+              leading: Container(),
             ),
 
+      /// SafeArea permet d'eviter les "obstables" pour les éléments "enfants", les problèmes d'affichage
         body :  SafeArea(
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  ///Fonctionnalité de la recherche de jeux
+                  Padding(
+                      padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: searchController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration:  InputDecoration(
+                      labelText: 'Rechercher un jeu...',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: const Color(0xFF1E262C) ,
+                      suffixIcon: IconButton(
+                        color: Colors.white,
+                        icon: const Icon(Icons.search, color: Color(0xFF636AF6), size: 30.0),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/search',
+                              arguments: {'userId': userId, 'search':searchController.text});},),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Color(0xFF1E262C), width: 2.0),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 16.0,
+                      ),),),),
+                  ///Stack permet de superposer les éléments
 
-                  Container(
-              child:  Padding(
-                  padding: EdgeInsets.all(16.0),
-
-
-              child: TextField(
-                controller: searchController,
-                style: const TextStyle(color: Colors.white),
-                decoration:  InputDecoration(
-                  labelText: 'Rechercher un jeu...',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  filled: true,
-                  fillColor: const Color(0xFF1E262C) ,
-                  suffixIcon: IconButton(
-                    color: Colors.white,
-                    icon: const Icon(Icons.search, color: Color(0xFF636AF6), size: 30.0),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/search',
-                          arguments: {'userId': userId, 'search':searchController.text});
-                    },
-                  ),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Color(0xFF1E262C), width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 16.0,
-                  ),
-                ),
-              ),
-              ),
-              ),
-
+                  ///L'affichage de ce jeu mis en valeur est coder en dur
                   Stack(
                     children: [
                       const SizedBox(
@@ -135,9 +123,7 @@ class _AccueilState extends State<Accueil> {
                         width: double.infinity,
                         child: Image(
                           image: AssetImage('assets/fondarriere.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          fit: BoxFit.cover,),),
                       const Positioned(
                         top: 40,
                         left: 20,
@@ -150,13 +136,10 @@ class _AccueilState extends State<Accueil> {
                                 blurRadius: 10.0,
                                 color: Colors.black,
                                 offset: Offset(5.0, 5.0),
-                              ),
-                            ],
+                              ),],
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                          ),),),
                       const Positioned(
                         top: 70,
                         left: 20,
@@ -169,13 +152,9 @@ class _AccueilState extends State<Accueil> {
                                 blurRadius: 10.0,
                                 color: Colors.black,
                                 offset: Offset(5.0, 5.0),
-                              ),
-                            ],
+                              ),],
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                            fontWeight: FontWeight.bold,),),),
                       const Positioned(
                         top: 100,
                         left: 20,
@@ -187,18 +166,16 @@ class _AccueilState extends State<Accueil> {
                               Shadow(
                                 blurRadius: 10.0,
                                 color: Colors.black,
-                                offset: Offset(5.0, 5.0),
-                              ),
-                            ],
+                                offset: Offset(5.0, 5.0),),],
                             fontSize: 16,
-                          ),
-                        ),
-                      ),
+                          ),),),
                       Positioned(
                         top: 150,
                         left: 20,
                         child: ElevatedButton(
                           onPressed: () {
+                            ///On donne en arguments les infos nécessaires d'un jeu pour l'affichage
+
                             Navigator.pushNamed(context, '/detail', arguments: {
                               'title': 'TitanFall 2 Ultimate Edition ',
                               'image':
@@ -214,14 +191,11 @@ class _AccueilState extends State<Accueil> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF636AF6),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 6),
-                          ),
+                                horizontal: 40, vertical: 6),),
                           child: const Text(
                             'En savoir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ),
-                      ),
+                          ),),),
                       const Positioned(
                         bottom: 5,
                         right: 10,
@@ -230,11 +204,7 @@ class _AccueilState extends State<Accueil> {
                           width: 100,
                           child: Image(
                             image: AssetImage('assets/jeudvd.png'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                          ),),),],),
     Container(
     padding: const EdgeInsets.all(16.0),
     child: const Text(
@@ -244,22 +214,15 @@ class _AccueilState extends State<Accueil> {
     fontSize: 16,
     fontWeight: FontWeight.bold,
     decoration: TextDecoration.underline),
-    ),
-
-    ),
+    ),),
+                  /// Expanded permet ici à Card de s'afficher sur l'espace disponible
                   Expanded(
                       child: SizedBox(
-                    child: CardInfos(user: userId),
-                  ))
-                ],
-              ),
-              ),
-
+                    child: CardInfos(user: userId),))],),),
           )
+    ///Message d'erreur si l'UserId est null
         : const Scaffold(
             backgroundColor: Color(0xFF1A2025),
             body: Center(
                 child: Text(
-                    'Il semble que vous ayez été déconnecté \n Veuillez revenir en arrière ')));
-  }
-}
+                    'Il semble que vous ayez été déconnecté \n Veuillez revenir en arrière ')));}}
