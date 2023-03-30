@@ -13,6 +13,8 @@ class Wishlist extends StatefulWidget {
 class _WishlistState extends State<Wishlist> {
   List gameswish =[];
 
+  bool isLoading=true;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,7 @@ class _WishlistState extends State<Wishlist> {
     else {
       setState(() {
         gameswish=res;
+        isLoading=false;
       });}}
 
   @override
@@ -71,7 +74,9 @@ class _WishlistState extends State<Wishlist> {
           backgroundColor: const Color(0xFF1A2025),),
         /// SafeArea permet d'eviter les "obstables" pour les éléments "enfants", les problèmes d'affichage
         body: SafeArea(
-          child : Center(
+          child: isLoading ?
+          Center(child : CircularProgressIndicator())
+              :Center(
               child: Container(
                   child: gameswish.isNotEmpty ? ListView.builder(
                     itemCount: gameswish.length,
