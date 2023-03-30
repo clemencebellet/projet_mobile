@@ -14,6 +14,8 @@ class Likes extends StatefulWidget {
 class _LikesState extends State<Likes> {
   List gameslikes = [];
 
+  bool isLoading=true;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +31,7 @@ class _LikesState extends State<Likes> {
     } else {
       setState(() {
         gameslikes = res;
+        isLoading=false;
       });}}
 
   @override
@@ -76,7 +79,9 @@ class _LikesState extends State<Likes> {
         /// SafeArea permet d'eviter les "obstables" pour les éléments "enfants", les problèmes d'affichage
 
         body: SafeArea(
-          child: Center(
+          child: isLoading ?
+              Center(child : CircularProgressIndicator())
+          :Center(
               child: Container(
                   child: gameslikes.isNotEmpty
                       ? ListView.builder(
