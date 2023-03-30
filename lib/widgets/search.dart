@@ -304,7 +304,14 @@ class _SearchState extends State<Search> {
       const SizedBox(height: 15,),
 
       Expanded(
-      child : ListView.builder(
+        child : _searchResultat.isEmpty ?  const Text(
+          textAlign: TextAlign.center,
+          'Aucun jeux ne correspond à votre recherche ',
+          style: TextStyle(
+            fontFamily: "GoogleSans-Bold",
+            color: Colors.white,
+            fontSize: 18,),)
+       : ListView.builder(
           itemCount: _searchResultat.length,
           itemBuilder: (BuildContext context, int i) {
             final Map<Object, dynamic> game = _searchResultat[i];
