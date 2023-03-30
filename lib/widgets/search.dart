@@ -304,6 +304,7 @@ class _SearchState extends State<Search> {
       const SizedBox(height: 15,),
 
       Expanded(
+        ///blindage recherche
         child : _searchResultat.isEmpty ?  const Text(
           textAlign: TextAlign.center,
           'Aucun jeux ne correspond à votre recherche ',
@@ -312,6 +313,7 @@ class _SearchState extends State<Search> {
             color: Colors.white,
             fontSize: 18,),)
        : ListView.builder(
+          ///tri des jeux en fonction de la taille de la liste
           itemCount: _searchResultat.length,
           itemBuilder: (BuildContext context, int i) {
             final Map<Object, dynamic> game = _searchResultat[i];
